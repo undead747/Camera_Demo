@@ -68,9 +68,7 @@ const handleVideoByUserMedia = () => {
         
         context.fillStyle = "#AAA";
         context.fillRect(0, 0, canvas.width, canvas.height);
-
-        let data = canvas.toDataURL('image/png');
-        photo.setAttribute('src', data);
+        
        
         if (width && height) {
             context.drawImage(video, 0, 0, width, height);
