@@ -16,22 +16,23 @@ const hasGetUserMedia = () => {
 }
 
 const handleVideoByUserMedia = () => {
+    let width = 320;
+    var height = 0;
+
+    var streaming = false;
+
+    var video = document.getElementById('video');
+    var canvas = document.getElementById('canvas');
+    var photo = document.getElementById('photo');
+    var startbutton = document.getElementById('startbutton');
+    
     if (hasGetUserMedia()) {
-        var errorCallback = function (e) {
-            console.log('Reeeejected!', e);
-        };
-
-        // Not showing vendor prefixes.
-        navigator.getUserMedia({ video: true, audio: true }, function (localMediaStream) {
-            var video = document.querySelector('video');
-            video.src = window.URL.createObjectURL(localMediaStream);
-
-            // Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
-            // See crbug.com/110938.
-            video.onloadedmetadata = function (e) {
-                // Ready to go. Do some stuff.
-            };
-        }, errorCallback);
+        navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(stream => {
+            video.srcObject = stream;
+            video.play();
+        }).catch(err => {
+            console.log("Errors !! : " + err);
+        })
     } else {
         alert("Browser not support User Media")
     }

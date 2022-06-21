@@ -19,7 +19,15 @@
    
     <div class="option1">
         <h4 class="mb-3">WebRTC</h4>
-        <video autoplay></video>
+        <canvas id="canvas">
+            <div class="output">
+              <img id="photo" alt="The screen capture will appear in this box.">
+            </div>
+          </canvas>
+        <div class="camera">
+            <video id="video">Video stream not available</video>
+            <button id="startbutton">Take photo</button>
+        </div>
         <img src="canIuseit.png" alt="map-image" class="map-image" id="map-image">
     </div>
     </div>
