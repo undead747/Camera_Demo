@@ -14,7 +14,11 @@
 
 <body>
     <div class="container">
-        <img src="download.png" alt="preview-image" class="preview-image" id="preview-image">
+        <canvas id="canvas" class="preview-image">
+            <div class="output">
+            </div>
+        </canvas>
+
         <div class="option1">
             <h4 class="mb-3">HTML Media Capture</h4>
             <input type="file" accept="image/*;capture=camera" id="htmlMediaCapture">
@@ -25,11 +29,6 @@
             <div class="camera">
                 <div class="text-center">
                     <video id="video" autoplay muted playsinline>Video stream not available</video>
-                    <canvas id="canvas">
-                        <div class="output">
-                            <img id="photo" alt="The screen capture will appear in this box.">
-                        </div>
-                    </canvas>
                 </div>
                 <div class="text-center">
                     <button id="start-video-btn" class="btn btn-primary">Start Video</button>
