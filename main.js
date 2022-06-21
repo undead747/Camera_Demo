@@ -1,5 +1,6 @@
 const htmlMediaCapture = document.getElementById("htmlMediaCapture");
 const previewImage = document.getElementById("preview-image");
+var previewExist = false;
 
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
@@ -18,6 +19,7 @@ const handleSubmitImageByMediaCapture = (elm) => {
                 canvas.height = imgObject.height;
                
                 context.drawImage(imgObject, 0 ,0);
+                previewExist = true;
             }
 
             imgObject.src = URL.createObjectURL(file);
@@ -63,11 +65,15 @@ const handleVideoByUserMedia = () => {
 
     captureBtn.onclick = (event) => {
         let context = canvas.getContext('2d');
+        
+        context.fillStyle = "#AAA";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        let data = canvas.toDataURL('image/png');
+        photo.setAttribute('src', data);
+       
         if (width && height) {
             context.drawImage(video, 0, 0, width, height);
-        }else{
-            context.fillStyle = "#AAA";
-            context.fillRect(0, 0, canvas.width, canvas.height);
         }
     }
 }
