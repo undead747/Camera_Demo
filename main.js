@@ -9,6 +9,7 @@ const captureBtn = document.getElementById('capture-btn');
 
 const handleSubmitImageByMediaCapture = (elm) => {
     elm.onchange = event => {
+        debugger
         const [file] = htmlMediaCapture.files;
         let context = canvas.getContext('2d');
  
@@ -34,11 +35,7 @@ const hasGetUserMedia = () => {
 }
 
 const handleVideoByUserMedia = () => {
-    let width = 550;
-    let height = 0;
-
     let streaming = false;
-
 
     captureBtn.disabled = true;
     
@@ -48,12 +45,11 @@ const handleVideoByUserMedia = () => {
                 video.play();
 
                 video.oncanplay = (event) =>{
+                    captureBtn.disabled = false;
                     if(!streaming){
-                        height = video.videoHeight / (video.videoWidth/width);
-                        video.width = width;
-                        video.height = height;
-                        canvas.width = width;
-                        canvas.height = height;
+                       
+                        video.width = video.videoWidth;
+                        video.height = video.videoHeight;
                         captureBtn.disabled = false;
                         streaming = true;
                     }
@@ -65,14 +61,12 @@ const handleVideoByUserMedia = () => {
 
     captureBtn.onclick = (event) => {
         let context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        canvas.width = video.width;
+        canvas.height = video.height;
         
-        context.fillStyle = "#AAA";
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        
-       
-        if (width && height) {
-            context.drawImage(video, 0, 0, width, height);
-        }
+        context.drawImage(video, 0, 0, video.width, video.height);
     }
 }
 
