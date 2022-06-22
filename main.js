@@ -40,6 +40,7 @@ const handleVideoByUserMedia = () => {
     captureBtn.disabled = true;
     
     startVideoBtn.onclick = (event) => {
+        if(hasGetUserMedia()){
             navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(stream => {
                 video.srcObject = stream;
                 video.play();
@@ -57,6 +58,9 @@ const handleVideoByUserMedia = () => {
             }).catch(err => {
                 console.log("Errors !! : " + err);
             })
+        }else{
+            alert("Your browser dose not supported this function !");
+        }
     }
 
     captureBtn.onclick = (event) => {
