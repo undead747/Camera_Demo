@@ -56,7 +56,7 @@ const handleVideoByUserMedia = () => {
                     }
                 }
             }).catch(err => {
-                console.log("Errors !! : " + err);
+                alert("Errors !! : " + err);
             })
         }else{
             alert("Your browser dose not supported this function !");
