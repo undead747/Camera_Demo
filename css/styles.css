@@ -1,0 +1,26 @@
+/* Ensure the size of the image fit the container perfectly */
+img {
+    display: block;
+  
+    /* This rule is very important, please don't ignore this */
+    max-width: 100%;
+  }
+
+  .preview-image{
+    max-width: 550px;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.option1{
+  margin: 5.5rem 0 1rem 0;
+}
+
+#preview-modal .modal-dialog{
+    width: 900px;
+}
+
+#preview-modal .modal-content{
+  width: 750px;
+}

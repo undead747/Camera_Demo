@@ -1,32 +1,43 @@
+const image = document.getElementById('image');
+
 const htmlMediaCapture = document.getElementById("htmlMediaCapture");
 const previewImage = document.getElementById("preview-image");
 var previewExist = false;
 
 const video = document.getElementById('video');
-const canvas = document.getElementById('canvas');
+const canvas = document.getElementById('temp-canvas');
 const startVideoBtn = document.getElementById('start-video-btn');
 const captureBtn = document.getElementById('capture-btn');
+const previewModal = new bootstrap.Modal(document.getElementById("preview-modal"), {});
+
+var cropper = new Cropper(previewImage, {
+    aspectRatio: 16 / 9,
+    dragMode: 'move',
+    viewMode: 2,
+    autoCropArea: 1,
+    background: false,
+  });
 
 const handleSubmitImageByMediaCapture = (elm) => {
     elm.onchange = event => {
-        debugger
         const [file] = htmlMediaCapture.files;
-        let context = canvas.getContext('2d');
  
         if (file) {
-            let imgObject = new Image;
-            imgObject.onload = () =>{
-                canvas.width = imgObject.width;
-                canvas.height = imgObject.height;
-               
-                context.drawImage(imgObject, 0 ,0);
-                previewExist = true;
-            }
-
-            imgObject.src = URL.createObjectURL(file);
+          previewModal.show();
+          setTimeout(()=>{
+              previewImage.src = URL.createObjectURL(file);
+              cropper.destroy();
+              
+              cropper = new Cropper(previewImage, {
+                aspectRatio: 16 / 9,
+                dragMode: 'move',
+                viewMode: 2,
+                background: false,
+              });
+            }, 100)
         }
+
     }
-    
 }
 
 const hasGetUserMedia = () => {
@@ -72,14 +83,19 @@ const handleVideoByUserMedia = () => {
         canvas.height = video.height;
         
         context.drawImage(video, 0, 0, video.width, video.height);
+        previewImage.src = canvas.toDataURL();
+        previewModal.show();
+        
+        cropper.destroy();
+            
+        cropper = new Cropper(previewImage, {
+          aspectRatio: 16 / 9,
+          dragMode: 'move',
+          viewMode: 2,
+          background: false,
+        });
+        
     }
-}
-
-const takePicture = (video) => {
-    const canvas = document.getElementById('canvas');
-
-    let context = canvas.getContext('2d');
-    context.drawImage(video, 0, 0, )
 }
 
 document.addEventListener('DOMContentLoaded', () => {
