@@ -40,7 +40,7 @@ const handleVideoByUserMedia = () => {
     captureBtn.disabled = true;
     
     startVideoBtn.onclick = (event) => {
-        if(hasGetUserMedia()){
+        // if(hasGetUserMedia()){
             navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(stream => {
                 video.srcObject = stream;
                 video.play();
@@ -58,9 +58,10 @@ const handleVideoByUserMedia = () => {
             }).catch(err => {
                 alert("Errors !! : " + err);
             })
-        }else{
-            alert("Your browser dose not supported this function !");
-        }
+        // }
+        // else{
+            // alert("Your browser dose not supported this function !");
+        // }
     }
 
     captureBtn.onclick = (event) => {
