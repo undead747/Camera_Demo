@@ -1,26 +1,111 @@
 /* Ensure the size of the image fit the container perfectly */
 img {
-    display: block;
-  
-    /* This rule is very important, please don't ignore this */
-    max-width: 100%;
-  }
+  display: block;
 
-  .preview-image{
-    max-width: 550px;
-    width: 100%;
-    display: block;
-    margin: 0 auto;
+  /* This rule is very important, please don't ignore this */
+  max-width: 100%;
 }
 
-.option1{
+.preview-image {
+  max-width: 550px;
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.image-result {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.option1 {
   margin: 5.5rem 0 1rem 0;
 }
 
-#preview-modal .modal-dialog{
-    width: 900px;
+#preview-modal .modal-dialog {
+  max-width: 900px;
 }
 
-#preview-modal .modal-content{
-  width: 750px;
+#preview-modal .modal-body>*+* {
+  margin-top: 1rem;
+}
+
+.preview-modal__preview-content {
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.preview-image__controller {
+  margin: 0 auto;
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.preview-image__possition-controller {
+  width: 130px;
+  height: 130px;
+
+  position: relative;
+}
+
+.preview-image__possition-up {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.preview-image__possition-down {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.preview-image__possition-left {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(0, -50%);
+}
+
+.preview-image__possition-right {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+}
+
+.preview-image__zoom-controller {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.preview-image__zoom-controller>*+* {
+  margin-left: .5rem;
+}
+
+.cropper-view-box {
+  outline: 4px solid #000000;
+  outline-color: rgb(0 0 0 / 85%);
+}
+
+.cropper-point {
+  background-color: #000000;
+  height: 8px;
+  width: 8px;
+  opacity: .8;
+}
+
+.cropper-face {
+  background-color: #000000;
+  opacity: 0.45;
+}
+
+.preview-image__download {
+  margin: 0 auto;
+  margin-top: .7rem;
+  display: block;
 }
