@@ -101,11 +101,21 @@ img {
 
 .cropper-face {
   background-color: #000000;
-  opacity: 0.45;
+  opacity: 0.25;
+  z-index: 2;
 }
 
 .preview-image__download {
   margin: 0 auto;
   margin-top: .7rem;
   display: block;
+}
+
+.crop-area-icon{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  font-size: 15rem;
 }

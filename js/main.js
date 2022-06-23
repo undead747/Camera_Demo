@@ -25,7 +25,7 @@ const previewModal = new bootstrap.Modal(document.getElementById("preview-modal"
 
 var cropper = null;
 var option = {
-    aspectRatio: 1/1,
+    aspectRatio: 2/3,
     dragMode: 'move',
     preview: '.img-preview',
     viewMode: 2,
