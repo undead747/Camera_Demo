@@ -118,4 +118,5 @@ img {
   transform: translate(-50%, -50%);
   z-index: 1;
   font-size: 15rem;
+  opacity: 0.8;
 }
