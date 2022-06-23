@@ -37,22 +37,22 @@ var option = {
 
         imageUpBtn.onclick = () => {
             currCropData = cropper.getCropBoxData();
-            if(currCropData.top > 0) cropper.setCropBoxData({...currCropData, top: currCropData.top - 10})
+            cropper.setCropBoxData({...currCropData, top: currCropData.top - 10})
         }
 
         imageDownBtn.onclick = () => {
             currCropData = cropper.getCropBoxData();
-            if(currCropData.top > 0) cropper.setCropBoxData({...currCropData, top: currCropData.top + 10})
+            cropper.setCropBoxData({...currCropData, top: currCropData.top + 10})
         }
 
         imageleftBtn.onclick = () => {
             currCropData = cropper.getCropBoxData();
-            if(currCropData.left > 0) cropper.setCropBoxData({...currCropData, top: currCropData.left - 10})
+            cropper.setCropBoxData({...currCropData, left: currCropData.left - 10})
         }
 
         imageRightBtn.onclick = () => {
             currCropData = cropper.getCropBoxData();
-            if(currCropData.right > 0) cropper.setCropBoxData({...currCropData, top: currCropData.left + 10})
+            cropper.setCropBoxData({...currCropData, left: currCropData.left + 10})
         }
 
         savePreviewImgBtn.onclick = () => {
