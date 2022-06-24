@@ -47,13 +47,13 @@ var option = {
         imageZoomInBtn.onclick = () => cropper.zoom(0.1);
         imageZoomOutBtn.onclick = () => cropper.zoom(-0.1);
 
-        imageUpBtn.onclick = () => cropper.move(0, 10)
+        imageUpBtn.onclick = () => cropper.move(0, -10)
 
-        imageDownBtn.onclick = () => cropper.move(0, -10)
+        imageDownBtn.onclick = () => cropper.move(0, 10)
 
-        imageleftBtn.onclick = () => cropper.move(10, 0)
+        imageleftBtn.onclick = () => cropper.move(-10, 0)
 
-        imageRightBtn.onclick = () => cropper.move(-10, 0)
+        imageRightBtn.onclick = () => cropper.move(10, 0)
 
         savePreviewImgBtn.onclick = () => {
             cropper.getCroppedCanvas().toBlob(blob => {
