@@ -27,7 +27,7 @@ var cropper = null;
 var option = {
     aspectRatio: 3/4,
     autoCropArea: 1,
-    viewMode: 2,
+    viewMode: 1,
     dragMode: 'none',
     restore: false,
     background: true,

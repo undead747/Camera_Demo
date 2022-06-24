@@ -31,16 +31,31 @@ img {
 }
 
 .preview-modal__preview-content {
-  width: 375px;
-  height: 500px;
+  width: 280px;
+  height: 375px;
   margin: 0 auto;
 }
 
+@media only screen and (min-width: 768px)  {
+  .preview-modal__preview-content {
+    width: 375px;
+    height: 500px;
+    margin: 0 auto;
+  }
+}
+
+
 .preview-image__controller {
   margin: 0 auto;
-  width: 50%;
+  width: 100%;
   display: flex;
   justify-content: space-around;
+}
+
+@media only screen and (min-width: 768px){
+  .preview-image__controller {
+    width: 50%;
+  }
 }
 
 .preview-image__possition-controller {
