@@ -102,6 +102,9 @@ button{
   justify-content: center;
   align-items: center;
 }
+.preview-image__zoom-controller > *{
+  width: 4rem;
+}
 
 .preview-image__zoom-controller>*+* {
   margin-left: .5rem;
