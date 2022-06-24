@@ -27,17 +27,19 @@ var cropper = null;
 var option = {
     aspectRatio: 3/4,
     autoCropArea: 1,
-    viewMode: 1,
+    viewMode: 0,
     dragMode: 'none',
-    restore: false,
     background: true,
     center: false,
     highlight: false,
     guides: false,
-    cropBoxMovable: false,
-    cropBoxResizable: false,
+    cropBoxMovable: true,
+    cropBoxResizable: true,
     toggleDragModeOnDblclick: false,
     ready: function(){
+        let currContainerData = cropper.getContainerData();
+        cropper.setCropBoxData({left: 0, top: 0, width: currContainerData.width, height: currContainerData.height});
+        console.log(JSON.stringify(cropper.getContainerData()));
         imageZoomInBtn.onclick = () => cropper.zoom(0.1);
         imageZoomOutBtn.onclick = () => cropper.zoom(-0.1);
 
