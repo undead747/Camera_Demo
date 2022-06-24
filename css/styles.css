@@ -31,7 +31,8 @@ img {
 }
 
 .preview-modal__preview-content {
-  max-width: 80%;
+  width: 375px;
+  height: 500px;
   margin: 0 auto;
 }
 
@@ -87,21 +88,7 @@ img {
   margin-left: .5rem;
 }
 
-.cropper-view-box {
-  outline: 4px solid #000000;
-  outline-color: rgb(0 0 0 / 85%);
-}
-
-.cropper-point {
-  background-color: #000000;
-  height: 8px;
-  width: 8px;
-  opacity: .8;
-}
-
 .cropper-face {
-  background-color: #000000;
-  opacity: 0.25;
   z-index: 2;
 }
 

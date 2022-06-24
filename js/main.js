@@ -25,35 +25,29 @@ const previewModal = new bootstrap.Modal(document.getElementById("preview-modal"
 
 var cropper = null;
 var option = {
-    aspectRatio: 2/3,
-    dragMode: 'move',
-    preview: '.img-preview',
+    aspectRatio: 3/4,
+    autoCropArea: 1,
     viewMode: 2,
-    modal: false,
-    background: false,
+    dragMode: 'none',
+    restore: false,
+    background: true,
+    center: false,
+    highlight: false,
+    guides: false,
+    cropBoxMovable: false,
+    cropBoxResizable: false,
+    toggleDragModeOnDblclick: false,
     ready: function(){
         imageZoomInBtn.onclick = () => cropper.zoom(0.1);
         imageZoomOutBtn.onclick = () => cropper.zoom(-0.1);
 
-        imageUpBtn.onclick = () => {
-            currCropData = cropper.getCropBoxData();
-            cropper.setCropBoxData({...currCropData, top: currCropData.top - 10})
-        }
+        imageUpBtn.onclick = () => cropper.move(0, 10)
 
-        imageDownBtn.onclick = () => {
-            currCropData = cropper.getCropBoxData();
-            cropper.setCropBoxData({...currCropData, top: currCropData.top + 10})
-        }
+        imageDownBtn.onclick = () => cropper.move(0, -10)
 
-        imageleftBtn.onclick = () => {
-            currCropData = cropper.getCropBoxData();
-            cropper.setCropBoxData({...currCropData, left: currCropData.left - 10})
-        }
+        imageleftBtn.onclick = () => cropper.move(10, 0)
 
-        imageRightBtn.onclick = () => {
-            currCropData = cropper.getCropBoxData();
-            cropper.setCropBoxData({...currCropData, left: currCropData.left + 10})
-        }
+        imageRightBtn.onclick = () => cropper.move(-10, 0)
 
         savePreviewImgBtn.onclick = () => {
             cropper.getCroppedCanvas().toBlob(blob => {
