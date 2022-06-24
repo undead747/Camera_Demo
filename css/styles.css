@@ -27,7 +27,7 @@ img {
 }
 
 #preview-modal .modal-body>*+* {
-  margin-top: 1rem;
+  margin-top: 1.2rem;
 }
 
 .preview-modal__preview-content {
@@ -111,6 +111,11 @@ img {
   margin: 0 auto;
   margin-top: .7rem;
   display: block;
+}
+
+.preview-modal__reset-btn{
+  display: flex;
+  justify-content: center;
 }
 
 .crop-area-icon{

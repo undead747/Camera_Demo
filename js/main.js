@@ -8,6 +8,7 @@ const video = document.getElementById('video');
 const canvas = document.getElementById('temp-canvas');
 const startVideoBtn = document.getElementById('start-video-btn');
 const captureBtn = document.getElementById('capture-btn');
+const closeImagePreviewBtn = document.getElementById('closeImagePreview');
 
 const imageUpBtn = document.querySelector(".preview-image__possition-up");
 const imageDownBtn = document.querySelector(".preview-image__possition-down");
@@ -15,6 +16,8 @@ const imageleftBtn = document.querySelector(".preview-image__possition-left");
 const imageRightBtn = document.querySelector(".preview-image__possition-right");
 const imageZoomInBtn = document.querySelector(".preview-image__zoom-in");
 const imageZoomOutBtn = document.querySelector(".preview-image__zoom-out");
+const imageResetBtn = document.getElementById("preview-modal__reset-btn");
+
 
 const savePreviewImgBtn = document.querySelector(".preview-image__save");
 const downloadImgBtn = document.querySelector(".preview-image__download");
@@ -29,12 +32,13 @@ var option = {
     autoCropArea: 1,
     viewMode: 0,
     dragMode: 'none',
+    data: null,
     background: true,
     center: false,
     highlight: false,
     guides: false,
-    cropBoxMovable: true,
-    cropBoxResizable: true,
+    cropBoxMovable: false,
+    cropBoxResizable: false,
     toggleDragModeOnDblclick: false,
     ready: function(){
         let currContainerData = cropper.getContainerData();
@@ -58,6 +62,10 @@ var option = {
                 previewModal.hide();
             })
         }
+
+        imageResetBtn.onclick = () => {
+            cropper.reset();
+        }
     }
 }
 
@@ -66,13 +74,14 @@ const handleSubmitImageByMediaCapture = (elm) => {
         const [file] = htmlMediaCapture.files;
 
         if (file) {
-            previewModal.show();
-            setTimeout(() => {
-                previewImage.src = URL.createObjectURL(file);
-                if (cropper) cropper.destroy();
+            previewImage.src = URL.createObjectURL(file);
+            if (cropper) cropper.destroy();
 
+            previewModal.show();
+            
+            setTimeout(() => {
                 cropper = new Cropper(previewImage, option);
-            }, 150)
+            }, 160)
         }
 
     }
@@ -157,8 +166,17 @@ const handleImageDownload = () => {
     }
 }
 
+const handleClosePreviewModal = () =>{
+    closeImagePreviewBtn.onclick = () => {
+        previewModal.hide();
+        htmlMediaCapture.value = '';
+        if (cropper) cropper.destroy();
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     handleSubmitImageByMediaCapture(htmlMediaCapture);
+    handleClosePreviewModal();
     handleVideoByUserMedia();
     handleImageDownload();
 })

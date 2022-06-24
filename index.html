@@ -51,13 +51,19 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">イメージプレビュー</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" id ="closeImagePreview" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="preview-modal__preview-content">
                         <img id="preview-image" src="#">
                     </div>
                     
+                    <div class="preview-modal__reset-btn">
+                        <button type="button" class="btn btn-secondary" id="preview-modal__reset-btn">
+                            リセット
+                        </button>
+                    </div>
+
                     <div class="preview-image__controller">
                         <div class="preview-image__possition-controller">
                             <button type="button" class="btn btn-secondary preview-image__possition-up">
@@ -82,6 +88,7 @@
                                 <i class="fa fa-search-minus" aria-hidden="true"></i>
                             </button>
                         </div>
+                        
                     </div>
                 </div>
                 <div class="modal-footer">
