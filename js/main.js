@@ -31,7 +31,7 @@ var option = {
     aspectRatio: 3/4,
     autoCropArea: 1,
     viewMode: 0,
-    dragMode: 'none',
+    dragMode: 'move',
     data: null,
     background: true,
     center: false,
