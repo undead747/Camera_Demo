@@ -103,7 +103,7 @@ button{
   align-items: center;
 }
 .preview-image__zoom-controller > *{
-  width: 4rem;
+  width: 5rem;
 }
 
 .preview-image__zoom-controller>*+* {
