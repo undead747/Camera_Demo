@@ -24,7 +24,7 @@ const downloadImgBtn = document.querySelector(".preview-image__download");
 const resultImg = document.querySelector(".image-result");
 
 const previewModal = new bootstrap.Modal(document.getElementById("preview-modal"), {});
-
+const loadingModal = document.querySelector('.loading-modal');
 
 var cropper = null;
 var option = {
@@ -56,11 +56,14 @@ var option = {
         imageRightBtn.onclick = () => cropper.move(10, 0)
 
         savePreviewImgBtn.onclick = () => {
+            loadingModal.style.display = "block";
             cropper.getCroppedCanvas().toBlob(blob => {
                 let croppedImgUrl = URL.createObjectURL(blob);
                 resultImg.src = croppedImgUrl;
                 previewModal.hide();
             })
+
+            loadingModal.style.display = "none";
         }
 
         imageResetBtn.onclick = () => {

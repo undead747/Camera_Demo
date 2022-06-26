@@ -16,15 +16,16 @@
 </head>
 
 <body>
-    <canvas id="temp-canvas" style="display: none;">
-        <div class="output">
-        </div>
-    </canvas>
     
-    <img class="image-result" src="./images/ui-element-square-border-frame-512.webp" alt="saved-image" />
-    <button type="button" class="btn btn-warning preview-image__download">ダウンロード</button>
-
     <div class="container">
+        <canvas id="temp-canvas" style="display: none;">
+            <div class="output">
+            </div>
+        </canvas>
+        
+        <img class="image-result" src="./images/ui-element-square-border-frame-512.webp" alt="saved-image" />
+        <button type="button" class="btn btn-warning preview-image__download">ダウンロード</button>
+
         <div class="option1">
             <h4 class="mb-3">HTML Media Capture</h4>
             <input type="file" accept=".png, .jpg, .jpeg, .heic" id="htmlMediaCapture">
@@ -96,6 +97,16 @@
                     <button type="button" class="btn btn-primary preview-image__save">保存</button>
                 </div>
             </div>
+        </div>
+
+    </div>
+    
+    <div class="loading-modal" style="display: none;">
+        <div class="loading-modal__content">
+            <div class="spinner-border text-warning" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p>Loading...</p>
         </div>
     </div>
 
