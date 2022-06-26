@@ -43,7 +43,6 @@ var option = {
     ready: function(){
         let currContainerData = cropper.getContainerData();
         cropper.setCropBoxData({left: 0, top: 0, width: currContainerData.width, height: currContainerData.height});
-        console.log(JSON.stringify(cropper.getContainerData()));
         imageZoomInBtn.onclick = () => cropper.zoom(0.1);
         imageZoomOutBtn.onclick = () => cropper.zoom(-0.1);
 
@@ -61,6 +60,8 @@ var option = {
                 let croppedImgUrl = URL.createObjectURL(blob);
                 resultImg.src = croppedImgUrl;
                 previewModal.hide();
+                
+                loadingModal.style.display = "none";
             })
 
             loadingModal.style.display = "none";
