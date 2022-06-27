@@ -34,6 +34,11 @@ button{
   margin-top: 0.7rem;
 }
 
+#preview-modal .modal-header,
+#preview-modal .modal-footer{
+  padding: 0.5em 0.7em;
+}
+
 .preview-modal__preview-content {
   width: 260px;
   height: 347px;
