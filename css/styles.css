@@ -31,12 +31,12 @@ button{
 }
 
 #preview-modal .modal-body>*+* {
-  margin-top: 1.2rem;
+  margin-top: 0.7rem;
 }
 
 .preview-modal__preview-content {
-  width: 250px;
-  height: 333px;
+  width: 260px;
+  height: 347px;
   margin: 0 auto;
 }
 
