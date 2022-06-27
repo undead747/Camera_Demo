@@ -72,6 +72,7 @@ var option = {
 
         imageResetBtn.onclick = () => {
             cropper.reset();
+            cropper.setCropBoxData({ left: 0, top: 0, width: currContainerData.width, height: currContainerData.height });
         }
     }
 }

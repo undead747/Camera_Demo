@@ -31,7 +31,7 @@ button{
 }
 
 #preview-modal .modal-body>*+* {
-  margin-top: 0.7rem;
+  margin-top: 1rem;
 }
 
 #preview-modal .modal-header,
