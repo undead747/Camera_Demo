@@ -56,15 +56,14 @@ var option = {
 
         savePreviewImgBtn.onclick = () => {
             try {
+                loadingModal.style.display = "block";
+                
                 cropper.getCroppedCanvas().toBlob(blob => {
-                    loadingModal.style.display = "block";
                     let croppedImgUrl = URL.createObjectURL(blob);
                     resultImg.src = croppedImgUrl;
                     previewModal.hide();
                     loadingModal.style.display = "none";
                 })
-
-                loadingModal.style.display = "none";
             } catch (error) {
                 alert(error);
             }
