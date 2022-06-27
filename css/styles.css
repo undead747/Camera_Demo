@@ -144,7 +144,7 @@ button{
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 1070;
   width: 100vw;
   height: 100vh;
 
