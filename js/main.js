@@ -28,7 +28,7 @@ const loadingModal = document.querySelector('.loading-modal');
 
 var cropper = null;
 var option = {
-    aspectRatio: 3/4,
+    aspectRatio: 3 / 4,
     autoCropArea: 1,
     viewMode: 0,
     dragMode: 'move',
@@ -40,9 +40,9 @@ var option = {
     cropBoxMovable: false,
     cropBoxResizable: false,
     toggleDragModeOnDblclick: false,
-    ready: function(){
+    ready: function () {
         let currContainerData = cropper.getContainerData();
-        cropper.setCropBoxData({left: 0, top: 0, width: currContainerData.width, height: currContainerData.height});
+        cropper.setCropBoxData({ left: 0, top: 0, width: currContainerData.width, height: currContainerData.height });
         imageZoomInBtn.onclick = () => cropper.zoom(0.1);
         imageZoomOutBtn.onclick = () => cropper.zoom(-0.1);
 
@@ -55,16 +55,20 @@ var option = {
         imageRightBtn.onclick = () => cropper.move(10, 0)
 
         savePreviewImgBtn.onclick = () => {
-            loadingModal.style.display = "block";
-            cropper.getCroppedCanvas().toBlob(blob => {
-                let croppedImgUrl = URL.createObjectURL(blob);
-                resultImg.src = croppedImgUrl;
-                previewModal.hide();
-                
-                loadingModal.style.display = "none";
-            })
+            try {
+                loadingModal.style.display = "block";
+                // cropper.getCroppedCanvas().toBlob(blob => {
+                //     let croppedImgUrl = URL.createObjectURL(blob);
+                //     resultImg.src = croppedImgUrl;
+                //     previewModal.hide();
 
-            loadingModal.style.display = "none";
+                //     loadingModal.style.display = "none";
+                // })
+
+                // loadingModal.style.display = "none";
+            } catch (error) {
+                alert(error);
+            }
         }
 
         imageResetBtn.onclick = () => {
@@ -82,7 +86,7 @@ const handleSubmitImageByMediaCapture = (elm) => {
             if (cropper) cropper.destroy();
 
             previewModal.show();
-            
+
             setTimeout(() => {
                 cropper = new Cropper(previewImage, option);
             }, 160)
@@ -151,7 +155,7 @@ const handleVideoByUserMedia = () => {
 
 const handleImageChange = () => {
     downloadImgBtn.disabled = true;
-    
+
     resultImg.onload = () => {
         downloadImgBtn.disabled = false;
     }
@@ -170,7 +174,7 @@ const handleImageDownload = () => {
     }
 }
 
-const handleClosePreviewModal = () =>{
+const handleClosePreviewModal = () => {
     closeImagePreviewBtn.onclick = () => {
         previewModal.hide();
         htmlMediaCapture.value = '';
