@@ -2640,6 +2640,7 @@
       //   pageX: 595,
       //   pageY: 256
       // }
+      alert(_originalEvent.pageX, _originalEvent.pageY)
       var canvasData = this.canvasData;
       ratio = Number(ratio);
 
