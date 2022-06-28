@@ -62,7 +62,7 @@ var option = {
                     resizeImage(croppedImgUrl);
                     previewModal.hide();
                     loadingModal.style.display = "none";
-                }, "image/jpeg")
+                }, null, 0.9)
             } catch (error) {
                 alert(error);
             }
