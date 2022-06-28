@@ -62,7 +62,7 @@ var option = {
                     resizeImage(croppedImgUrl);
                     previewModal.hide();
                     loadingModal.style.display = "none";
-                }, null, 0.9)
+                }, "image/jpg", 0.9)
             } catch (error) {
                 alert(error);
             }
@@ -168,7 +168,7 @@ const handleImageDownload = () => {
         let currDate = new Date();
 
         aTag.href = resultImg.src;
-        aTag.download = `download_${currDate.toLocaleString()}.png`;
+        aTag.download = `download_${currDate.toLocaleString()}.jpg`;
         aTag.click();
     }
 }
