@@ -2635,24 +2635,18 @@
      * @returns {Cropper} this
      */
     zoom: function zoom(ratio, _originalEvent) {
-      // //2022/06/28: Setting concretely zoom position base on image default size (240 x 320) 
-      // _originalEvent = {
-      //   pageX: 595,
-      //   pageY: 256
-      // }
-      alert(`${_originalEvent.pageX} ${_originalEvent.pageY}`)
       var canvasData = this.canvasData;
       ratio = Number(ratio);
-
+      
       if (ratio < 0) {
         ratio = 1 / (1 - ratio);
       } else {
         ratio = 1 + ratio;
       }
-
+      
       return this.zoomTo(canvasData.width * ratio / canvasData.naturalWidth, null, _originalEvent);
     },
-
+    
     /**
      * Zoom the canvas to an absolute ratio
      * @param {number} ratio - The target ratio.
@@ -2661,6 +2655,10 @@
      * @returns {Cropper} this
      */
     zoomTo: function zoomTo(ratio, pivot, _originalEvent) {
+      // //2022/06/28: Setting concretely zoom position base on image default size (240 x 320) 
+      const centerX = 120;
+      const centerY = 160;
+
       var options = this.options,
           canvasData = this.canvasData;
       var width = canvasData.width,
@@ -2689,15 +2687,20 @@
             pageY: _originalEvent.pageY
           }; // Zoom from the triggering point of the event
           
-          canvasData.left -= (newWidth - width) * ((center.pageX - offset.left - canvasData.left) / width);
-          canvasData.top -= (newHeight - height) * ((center.pageY - offset.top - canvasData.top) / height);
+          debugger
+          // canvasData.left -= (newWidth - width) * ((center.pageX - offset.left - canvasData.left) / width);
+          // canvasData.top -= (newHeight - height) * ((center.pageY - offset.top - canvasData.top) / height);
+          canvasData.left -= (newWidth - width) * ((centerX - canvasData.left) / width);
+          canvasData.top -= (newHeight - height) * ((centerY - canvasData.top) / height);
         } else if (isPlainObject(pivot) && isNumber(pivot.x) && isNumber(pivot.y)) {
           canvasData.left -= (newWidth - width) * ((pivot.x - canvasData.left) / width);
           canvasData.top -= (newHeight - height) * ((pivot.y - canvasData.top) / height);
         } else {
           // Zoom from the center of the canvas
-          canvasData.left -= (newWidth - width) / 2;
-          canvasData.top -= (newHeight - height) / 2;
+          // canvasData.left -= (newWidth - width) / 2;
+          // canvasData.top -= (newHeight - height) / 2;
+          canvasData.left -= (newWidth - width) * ((centerX - canvasData.left) / width);
+          canvasData.top -= (newHeight - height) * ((centerY - canvasData.top) / height);
         }
 
         canvasData.width = newWidth;

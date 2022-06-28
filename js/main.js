@@ -42,7 +42,10 @@ var option = {
     ready: function () {
         let currContainerData = cropper.getContainerData();
         cropper.setCropBoxData({ left: 0, top: 0, width: currContainerData.width, height: currContainerData.height });
-        imageZoomInBtn.onclick = () => cropper.zoom(0.1);
+        imageZoomInBtn.onclick = () =>{
+            document.getElementById("preview__center-point").dispatchEvent(new CustomEvent("scroll"));
+            cropper.zoom(0.1);
+        } 
         imageZoomOutBtn.onclick = () => cropper.zoom(-0.1);
 
         imageUpBtn.onclick = () => cropper.move(0, -10)
@@ -205,4 +208,8 @@ document.addEventListener('DOMContentLoaded', () => {
     handleClosePreviewModal();
     handleVideoByUserMedia();
     handleImageDownload();
+
+    document.getElementById("preview__center-point").onscroll = (event) => {
+        console.log(event)
+    }
 })
