@@ -2635,6 +2635,12 @@
      * @returns {Cropper} this
      */
     zoom: function zoom(ratio, _originalEvent) {
+      //2022/06/28: Setting concretely zoom position base on image default size (240 x 320) 
+      _originalEvent = {
+        pageX: 595,
+        pageY: 256
+      }
+
       var canvasData = this.canvasData;
       ratio = Number(ratio);
 
@@ -2674,7 +2680,7 @@
         }) === false) {
           return this;
         }
-
+        
         if (_originalEvent) {
           var pointers = this.pointers;
           var offset = getOffset(this.cropper);
@@ -2682,7 +2688,7 @@
             pageX: _originalEvent.pageX,
             pageY: _originalEvent.pageY
           }; // Zoom from the triggering point of the event
-
+          
           canvasData.left -= (newWidth - width) * ((center.pageX - offset.left - canvasData.left) / width);
           canvasData.top -= (newHeight - height) * ((center.pageY - offset.top - canvasData.top) / height);
         } else if (isPlainObject(pivot) && isNumber(pivot.x) && isNumber(pivot.y)) {
