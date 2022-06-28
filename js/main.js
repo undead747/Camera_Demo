@@ -5,7 +5,7 @@ const previewImage = document.getElementById("preview-image");
 var previewExist = false;
 
 const video = document.getElementById('video');
-const canvas = document.getElementById('temp-canvas');
+const temCanvas = document.getElementById('temp-canvas');
 const startVideoBtn = document.getElementById('start-video-btn');
 const captureBtn = document.getElementById('capture-btn');
 const closeImagePreviewBtn = document.getElementById('closeImagePreview');
@@ -17,7 +17,6 @@ const imageRightBtn = document.querySelector(".preview-image__possition-right");
 const imageZoomInBtn = document.querySelector(".preview-image__zoom-in");
 const imageZoomOutBtn = document.querySelector(".preview-image__zoom-out");
 const imageResetBtn = document.getElementById("preview-modal__reset-btn");
-
 
 const savePreviewImgBtn = document.querySelector(".preview-image__save");
 const downloadImgBtn = document.querySelector(".preview-image__download");
@@ -57,13 +56,13 @@ var option = {
         savePreviewImgBtn.onclick = () => {
             try {
                 loadingModal.style.display = "block";
-                
-                cropper.getCroppedCanvas().toBlob(blob => {
+                cropper.getCroppedCanvas({fillColor: '#FFFFFF' }).toBlob(blob => {
+                    console.log(blob.size)
                     let croppedImgUrl = URL.createObjectURL(blob);
-                    resultImg.src = croppedImgUrl;
+                    resizeImage(croppedImgUrl);
                     previewModal.hide();
                     loadingModal.style.display = "none";
-                })
+                }, "image/jpeg")
             } catch (error) {
                 alert(error);
             }
@@ -81,9 +80,10 @@ const handleSubmitImageByMediaCapture = (elm) => {
         const [file] = htmlMediaCapture.files;
 
         if (file) {
+            if (file.size > 2073600) alert("写真が大きすぎる !!!");
             previewImage.src = URL.createObjectURL(file);
-            if (cropper) cropper.destroy();
 
+            if (cropper) cropper.destroy();
             previewModal.show();
 
             setTimeout(() => {
@@ -130,17 +130,17 @@ const handleVideoByUserMedia = () => {
     }
 
     captureBtn.onclick = (event) => {
-        let context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        let context = temCanvas.getContext('2d');
+        context.clearRect(0, 0, temCanvas.width, temCanvas.height);
 
-        canvas.width = video.width;
-        canvas.height = video.height;
+        temCanvas.width = video.width;
+        temCanvas.height = video.height;
 
         context.drawImage(video, 0, 0, video.width, video.height);
-        previewImage.src = canvas.toDataURL();
+        previewImage.src = temCanvas.toDataURL();
         previewModal.show();
 
-        cropper.destroy();
+        if (cropper) cropper.destroy();
 
         cropper = new Cropper(previewImage, {
             aspectRatio: 16 / 9,
@@ -168,7 +168,7 @@ const handleImageDownload = () => {
         let currDate = new Date();
 
         aTag.href = resultImg.src;
-        aTag.download = `download_${currDate.toLocaleString()}.jpg`;
+        aTag.download = `download_${currDate.toLocaleString()}.png`;
         aTag.click();
     }
 }
@@ -179,6 +179,25 @@ const handleClosePreviewModal = () => {
         htmlMediaCapture.value = '';
         if (cropper) cropper.destroy();
     }
+}
+
+const resizeImage = (imgSrc) =>{
+    let finalCanvas = document.createElement("canvas");
+    let img = new Image();
+    const finalWidth = 240;
+    const finalHeight = 320;
+
+    img.onload = function () {
+        finalCanvas.width = finalWidth;
+        finalCanvas.height = finalHeight;
+    
+        finalCanvas.getContext("2d").drawImage(img, 0, 0, img.width, img.height,
+        0, 0, finalCanvas.width, finalCanvas.height);
+
+        resultImg.src = finalCanvas.toDataURL("image/jpg")
+    }
+
+    img.src = imgSrc;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
