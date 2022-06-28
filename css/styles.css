@@ -40,18 +40,12 @@ button{
 }
 
 .preview-modal__preview-content {
-  width: 260px;
-  height: 347px;
+  width: 240px;
+  height: 320px;
   margin: 0 auto;
 }
 
-@media only screen and (min-width: 768px)  {
-  .preview-modal__preview-content {
-    width: 375px;
-    height: 500px;
-    margin: 0 auto;
-  }
-}
+
 
 
 .preview-image__controller {

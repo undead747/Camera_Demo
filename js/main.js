@@ -61,6 +61,7 @@ var option = {
                     resizeImage(croppedImgUrl);
                     previewModal.hide();
                     loadingModal.style.display = "none";
+                    htmlMediaCapture.value = '';
                 }, 'image/jpeg', 0.9)
             } catch (error) {
                 alert(error);
@@ -187,7 +188,6 @@ const resizeImage = (imgSrc) =>{
     const finalHeight = 320;
 
     img.onload = function () {
-        debugger
         finalCanvas.width = finalWidth;
         finalCanvas.height = finalHeight;
     
