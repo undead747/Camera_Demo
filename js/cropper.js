@@ -2635,12 +2635,11 @@
      * @returns {Cropper} this
      */
     zoom: function zoom(ratio, _originalEvent) {
-      //2022/06/28: Setting concretely zoom position base on image default size (240 x 320) 
-      _originalEvent = {
-        pageX: 595,
-        pageY: 256
-      }
-
+      // //2022/06/28: Setting concretely zoom position base on image default size (240 x 320) 
+      // _originalEvent = {
+      //   pageX: 595,
+      //   pageY: 256
+      // }
       var canvasData = this.canvasData;
       ratio = Number(ratio);
 
