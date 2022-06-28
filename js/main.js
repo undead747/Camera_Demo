@@ -57,12 +57,11 @@ var option = {
             try {
                 loadingModal.style.display = "block";
                 cropper.getCroppedCanvas({fillColor: '#FFFFFF' }).toBlob(blob => {
-                    console.log(blob.size)
                     let croppedImgUrl = URL.createObjectURL(blob);
                     resizeImage(croppedImgUrl);
                     previewModal.hide();
                     loadingModal.style.display = "none";
-                }, "image/jpg", 0.9)
+                }, 'image/jpeg', 0.9)
             } catch (error) {
                 alert(error);
             }
@@ -188,13 +187,14 @@ const resizeImage = (imgSrc) =>{
     const finalHeight = 320;
 
     img.onload = function () {
+        debugger
         finalCanvas.width = finalWidth;
         finalCanvas.height = finalHeight;
     
         finalCanvas.getContext("2d").drawImage(img, 0, 0, img.width, img.height,
         0, 0, finalCanvas.width, finalCanvas.height);
 
-        resultImg.src = finalCanvas.toDataURL("image/jpg")
+        resultImg.src = finalCanvas.toDataURL("image/jpeg")
     }
 
     img.src = imgSrc;
