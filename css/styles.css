@@ -7,7 +7,7 @@ img {
 }
 
 button{
-  touch-action: manipulation;
+  touch-action: none;
 }
 
 .preview-image {
