@@ -2655,22 +2655,22 @@
      * @returns {Cropper} this
      */
     zoomTo: function zoomTo(ratio, pivot, _originalEvent) {
-      // //2022/06/28: Setting concretely zoom position base on image default size (240 x 320) 
+      // //2022/06/28: Setting concretely zoom position base on crop area default size (240 x 320) 
       const centerX = 120;
       const centerY = 160;
 
       var options = this.options,
-          canvasData = this.canvasData;
+      canvasData = this.canvasData;
       var width = canvasData.width,
-          height = canvasData.height,
-          naturalWidth = canvasData.naturalWidth,
-          naturalHeight = canvasData.naturalHeight;
+      height = canvasData.height,
+      naturalWidth = canvasData.naturalWidth,
+      naturalHeight = canvasData.naturalHeight;
       ratio = Number(ratio);
-
+      
       if (ratio >= 0 && this.ready && !this.disabled && options.zoomable) {
         var newWidth = naturalWidth * ratio;
         var newHeight = naturalHeight * ratio;
-
+        
         if (dispatchEvent(this.element, EVENT_ZOOM, {
           ratio: ratio,
           oldRatio: width / naturalWidth,
@@ -2687,7 +2687,7 @@
             pageY: _originalEvent.pageY
           }; // Zoom from the triggering point of the event
           
-          debugger
+          // //2022/06/28: Setting concretely zoom position base on crop area default size (240 x 320) 
           // canvasData.left -= (newWidth - width) * ((center.pageX - offset.left - canvasData.left) / width);
           // canvasData.top -= (newHeight - height) * ((center.pageY - offset.top - canvasData.top) / height);
           canvasData.left -= (newWidth - width) * ((centerX - canvasData.left) / width);
@@ -2696,6 +2696,7 @@
           canvasData.left -= (newWidth - width) * ((pivot.x - canvasData.left) / width);
           canvasData.top -= (newHeight - height) * ((pivot.y - canvasData.top) / height);
         } else {
+          // //2022/06/28: Setting concretely zoom position base on crop area default size (240 x 320) 
           // Zoom from the center of the canvas
           // canvasData.left -= (newWidth - width) / 2;
           // canvasData.top -= (newHeight - height) / 2;

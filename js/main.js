@@ -26,6 +26,7 @@ const previewModal = new bootstrap.Modal(document.getElementById("preview-modal"
 const loadingModal = document.querySelector('.loading-modal');
 
 var cropper = null;
+
 var option = {
     aspectRatio: 3 / 4,
     autoCropArea: 1,
@@ -81,12 +82,13 @@ const handleSubmitImageByMediaCapture = (elm) => {
         const [file] = htmlMediaCapture.files;
 
         if (file) {
-            if (file.size > 2073600) alert("写真が大きすぎる !!!");
+            if (file.size > 6220800) alert("写真が大きすぎる !!!");
             previewImage.src = URL.createObjectURL(file);
 
             if (cropper) cropper.destroy();
             previewModal.show();
 
+            //2022/06/20: for some reason, cropperJs set wrong image size when display it on bootstrap modal
             setTimeout(() => {
                 cropper = new Cropper(previewImage, option);
             }, 160)
