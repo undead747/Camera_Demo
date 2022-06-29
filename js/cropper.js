@@ -2698,10 +2698,10 @@
         } else {
           // //2022/06/28: Setting concretely zoom position base on crop area default size (240 x 320) 
           // Zoom from the center of the canvas
-          // canvasData.left -= (newWidth - width) / 2;
-          // canvasData.top -= (newHeight - height) / 2;
-          canvasData.left -= (newWidth - width) * ((centerX - canvasData.left) / width);
-          canvasData.top -= (newHeight - height) * ((centerY - canvasData.top) / height);
+          canvasData.left -= (newWidth - width) / 2;
+          canvasData.top -= (newHeight - height) / 2;
+          // canvasData.left -= (newWidth - width) * ((centerX - canvasData.left) / width);
+          // canvasData.top -= (newHeight - height) * ((centerY - canvasData.top) / height);
         }
 
         canvasData.width = newWidth;
