@@ -1,8 +1,7 @@
 const image = document.getElementById('image');
 
 const htmlMediaCapture = document.getElementById("htmlMediaCapture");
-const previewImage = document.getElementById("preview-image");
-var previewExist = false;
+const previewContent = document.getElementById("preview-content");
 
 const video = document.getElementById('video');
 const temCanvas = document.getElementById('temp-canvas');
@@ -24,55 +23,27 @@ const resultImg = document.querySelector(".image-result");
 
 const previewModal = new bootstrap.Modal(document.getElementById("preview-modal"), {});
 const loadingModal = document.querySelector('.loading-modal');
+let croppieInst = null;
 
-var cropper = null;
+const croppieInit = (imgSrc) => {
+    const img = new Image();
+    if (imgSrc) {
+        img.src = imgSrc;
+        img.onload = () => {
+            if (croppieInst) croppieInst.destroy();
+            croppieInst = new Croppie(previewContent, {
+                viewport: { width: 240, height: 320 },
+                enforceBoundary: false,
+                showZoomer: false,
+                customClass: "fuck"
+            })
 
-var option = {
-    aspectRatio: 3 / 4,
-    autoCropArea: 1,
-    viewMode: 0,
-    dragMode: 'move',
-    data: null,
-    background: true,
-    center: false,
-    highlight: false,
-    guides: false,
-    cropBoxMovable: false,
-    cropBoxResizable: false,
-    toggleDragModeOnDblclick: false,
-    ready: function () {
-        let currContainerData = cropper.getContainerData();
-        cropper.setCropBoxData({ left: 0, top: 0, width: currContainerData.width, height: currContainerData.height });
-        imageZoomInBtn.onclick = () => cropper.zoom(0.15);
-
-        imageZoomOutBtn.onclick = () => cropper.zoom(-0.15);
-
-        imageUpBtn.onclick = () => cropper.move(0, -10)
-
-        imageDownBtn.onclick = () => cropper.move(0, 10)
-
-        imageleftBtn.onclick = () => cropper.move(-10, 0)
-
-        imageRightBtn.onclick = () => cropper.move(10, 0)
-
-        savePreviewImgBtn.onclick = () => {
-            try {
-                loadingModal.style.display = "block";
-                cropper.getCroppedCanvas({fillColor: '#FFFFFF' }).toBlob(blob => {
-                    let croppedImgUrl = URL.createObjectURL(blob);
-                    resizeImage(croppedImgUrl);
-                    previewModal.hide();
-                    loadingModal.style.display = "none";
-                    htmlMediaCapture.value = '';
-                }, 'image/jpeg', 0.9)
-            } catch (error) {
-                alert(error);
-            }
-        }
-
-        imageResetBtn.onclick = () => {
-            cropper.reset();
-            cropper.setCropBoxData({ left: 0, top: 0, width: currContainerData.width, height: currContainerData.height });
+            croppieInst.bind({
+                url: imgSrc,
+                points: [0, 160, 0, 0],
+                orientation: 1,
+                zoom: 240 / img.width 
+            })
         }
     }
 }
@@ -80,22 +51,76 @@ var option = {
 const handleSubmitImageByMediaCapture = (elm) => {
     elm.onchange = event => {
         const [file] = htmlMediaCapture.files;
+        // 1920 x 1080 img
+        const maxImgSize = 6220800;
 
         if (file) {
-            if (file.size > 6220800) alert("写真が大きすぎる !!!");
-            previewImage.src = URL.createObjectURL(file);
-
-            if (cropper) cropper.destroy();
-            previewModal.show();
-
-            //2022/06/20: for some reason, cropperJs set wrong image size when display it on bootstrap modal
+            if (file.size > maxImgSize) alert("写真が大きすぎる !!!");
             setTimeout(() => {
-                cropper = new Cropper(previewImage, option);
+                croppieInit(URL.createObjectURL(file));
             }, 160)
-        }
 
+            previewModal.show();
+        }
     }
 }
+
+const handleImageChange = () => {
+    downloadImgBtn.disabled = true;
+
+    resultImg.onload = () => {
+        downloadImgBtn.disabled = false;
+    }
+}
+
+const handleImageDownload = () => {
+    let aTag = document.createElement('a');
+
+    handleImageChange();
+
+    downloadImgBtn.onclick = () => {
+        let currDate = new Date();
+
+        aTag.href = resultImg.src;
+        aTag.download = `download_${currDate.toLocaleString()}.jpg`;
+        aTag.click();
+    }
+}
+
+const handleClosePreviewModal = () => {
+    closeImagePreviewBtn.onclick = () => {
+        previewModal.hide();
+        htmlMediaCapture.value = '';
+    }
+}
+
+const resizeImage = (imgSrc) => {
+    let finalCanvas = document.createElement("canvas");
+    let img = new Image();
+    const finalWidth = 240;
+    const finalHeight = 320;
+
+    img.onload = function () {
+        finalCanvas.width = finalWidth;
+        finalCanvas.height = finalHeight;
+
+        finalCanvas.getContext("2d").drawImage(img, 0, 0, img.width, img.height,
+            0, 0, finalCanvas.width, finalCanvas.height);
+
+        resultImg.src = finalCanvas.toDataURL("image/jpeg")
+    }
+
+    img.src = imgSrc;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    handleSubmitImageByMediaCapture(htmlMediaCapture);
+    handleClosePreviewModal();
+    handleVideoByUserMedia();
+    handleImageDownload();
+})
+
+
 
 const hasGetUserMedia = () => {
     return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
@@ -155,57 +180,55 @@ const handleVideoByUserMedia = () => {
     }
 }
 
-const handleImageChange = () => {
-    downloadImgBtn.disabled = true;
 
-    resultImg.onload = () => {
-        downloadImgBtn.disabled = false;
-    }
-}
+// var cropper = null;
 
-const handleImageDownload = () => {
-    let aTag = document.createElement('a');
+// var option = {
+//     aspectRatio: 3 / 4,
+//     autoCropArea: 1,
+//     viewMode: 0,
+//     dragMode: 'move',
+//     data: null,
+//     background: true,
+//     center: false,
+//     highlight: false,
+//     guides: false,
+//     cropBoxMovable: false,
+//     cropBoxResizable: false,
+//     toggleDragModeOnDblclick: false,
+//     ready: function () {
+//         let currContainerData = cropper.getContainerData();
+//         cropper.setCropBoxData({ left: 0, top: 0, width: currContainerData.width, height: currContainerData.height });
+//         imageZoomInBtn.onclick = () => cropper.zoom(0.15);
 
-    handleImageChange();
-    downloadImgBtn.onclick = () => {
-        let currDate = new Date();
+//         imageZoomOutBtn.onclick = () => cropper.zoom(-0.15);
 
-        aTag.href = resultImg.src;
-        aTag.download = `download_${currDate.toLocaleString()}.jpg`;
-        aTag.click();
-    }
-}
+//         imageUpBtn.onclick = () => cropper.move(0, -10)
 
-const handleClosePreviewModal = () => {
-    closeImagePreviewBtn.onclick = () => {
-        previewModal.hide();
-        htmlMediaCapture.value = '';
-        if (cropper) cropper.destroy();
-    }
-}
+//         imageDownBtn.onclick = () => cropper.move(0, 10)
 
-const resizeImage = (imgSrc) =>{
-    let finalCanvas = document.createElement("canvas");
-    let img = new Image();
-    const finalWidth = 240;
-    const finalHeight = 320;
+//         imageleftBtn.onclick = () => cropper.move(-10, 0)
 
-    img.onload = function () {
-        finalCanvas.width = finalWidth;
-        finalCanvas.height = finalHeight;
-    
-        finalCanvas.getContext("2d").drawImage(img, 0, 0, img.width, img.height,
-        0, 0, finalCanvas.width, finalCanvas.height);
+//         imageRightBtn.onclick = () => cropper.move(10, 0)
 
-        resultImg.src = finalCanvas.toDataURL("image/jpeg")
-    }
+//         savePreviewImgBtn.onclick = () => {
+//             try {
+//                 loadingModal.style.display = "block";
+//                 cropper.getCroppedCanvas({fillColor: '#FFFFFF' }).toBlob(blob => {
+//                     let croppedImgUrl = URL.createObjectURL(blob);
+//                     resizeImage(croppedImgUrl);
+//                     previewModal.hide();
+//                     loadingModal.style.display = "none";
+//                     htmlMediaCapture.value = '';
+//                 }, 'image/jpeg', 0.9)
+//             } catch (error) {
+//                 alert(error);
+//             }
+//         }
 
-    img.src = imgSrc;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    handleSubmitImageByMediaCapture(htmlMediaCapture);
-    handleClosePreviewModal();
-    handleVideoByUserMedia();
-    handleImageDownload();
-})
+//         imageResetBtn.onclick = () => {
+//             cropper.reset();
+//             cropper.setCropBoxData({ left: 0, top: 0, width: currContainerData.width, height: currContainerData.height });
+//         }
+//     }
+// }

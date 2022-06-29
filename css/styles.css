@@ -39,10 +39,11 @@ button{
   padding: 0.2em 0.5em;
 }
 
-.preview-modal__preview-content {
+.preview-modal__content{
   width: 240px;
   height: 320px;
   margin: 0 auto;
+  border: 1px black solid;
 }
 
 .preview-image__controller {

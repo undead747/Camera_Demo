@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
         integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="./css/cropper.css">
+    <link rel="stylesheet" href="./css/croppie.css">
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 
@@ -43,6 +43,7 @@
         </div>
     </div>
 
+    
     <!-- Modal -->
     <div class="modal fade" id="preview-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -52,10 +53,7 @@
                     <button type="button" class="btn-close" id ="closeImagePreview" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="preview-modal__preview-content">
-                        <img id="preview-image" src="#">
-                    </div>
-                    
+                    <div class="preview-modal__content" id="preview-content" style="width: 240px; height: 320px; margin: 0 auto;"></div>
                     
                     <div class="preview-image__controller">
                         <div class="preview-modal__reset-btn">
@@ -110,7 +108,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-    <script src="./js/cropper.js"></script>
+    <script src="./js/croppie.js"></script>
     <script src="./js/main.js"></script>
 </body>
 
