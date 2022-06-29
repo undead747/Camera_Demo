@@ -43,17 +43,7 @@ button{
   width: 240px;
   height: 320px;
   margin: 0 auto;
-
-  position: relative;
 }
-
-#preview__center-point{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 
 .preview-image__controller {
   margin: 0 auto;
@@ -133,7 +123,7 @@ button{
 
 .crop-area-icon{
   position: absolute;
-  top: 50%;
+  top: 63%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
