@@ -55,7 +55,7 @@ const croppieInit = (imgSrc) => {
             imageResetBtn.onclick = () => {
                 croppieInst.bind({
                     url: imgSrc,
-                    zoom: QVGAWidth / img.width,
+                    zoom: (QVGAWidth < width) ? QVGAWidth / img.width : 1,
                     orientation: 1
                 })
             }
