@@ -50,8 +50,6 @@ const croppieInit = (imgSrc) => {
                 url: imgSrc,
                  zoom: defaultZoomRatio,
                 orientation: 1
-            }).then(() => {
-                overideCroppieZoom();
             })
 
             imageResetBtn.onclick = () => {
@@ -116,12 +114,7 @@ const croppieInit = (imgSrc) => {
             
             const handleZoomOutEvent = (zoomRatio) => {
                 let currZoomVal = croppieInst.get().zoom;
-                if(currZoomVal - zoomRatio < QVGAWidth / img.width && zoomRatio !== 0.01 ){
-                    handleZoomOutEvent(0.01);
-                    return
-                }
-
-                if (currZoomVal - zoomRatio >= QVGAWidth / img.width) croppieInst.setZoom(currZoomVal - zoomRatio);
+                croppieInst.setZoom(currZoomVal - zoomRatio);
             }
         }
     }
