@@ -96,7 +96,8 @@ const croppieInit = (imgSrc) => {
 
                 currCropArea.addEventListener("touchmove", (event) => {
                     if(event.targetTouches.length === 2){
-                        
+                        event.preventDefault();
+                        event.stopImmediatePropagation();
                     }
                 })
                 
