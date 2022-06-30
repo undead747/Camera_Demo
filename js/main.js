@@ -96,16 +96,16 @@ const croppieInit = (imgSrc) => {
                     else handleZoomOutEvent(0.05);
                 }, true)
 
-                currCropArea.addEventListener("touchmove", (event) => {
-                    if(event.targetTouches.length === 2){
-                        let currZoomVal = overideCroppieZoom().zoom;
+                // currCropArea.addEventListener("touchmove", (event) => {
+                //     if(event.targetTouches.length === 2){
+                //         let currZoomVal = overideCroppieZoom().zoom;
 
-                        if((currZoomVal + 0.01) <= defaultZoomRatio){
-                            event.preventDefault();
-                            event.stopImmediatePropagation();
-                        }
-                    }
-                })
+                //         if((currZoomVal + 0.01) <= defaultZoomRatio){
+                //             event.preventDefault();
+                //             event.stopImmediatePropagation();
+                //         }
+                //     }
+                // })
                 
             }
             
