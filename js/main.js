@@ -46,7 +46,7 @@ const croppieInit = (imgSrc) => {
 
             croppieInst.bind({
                 url: imgSrc,
-                 zoom: (QVGAWidth < img.width) ? QVGAWidth / img.width : 1,
+                 zoom: QVGAWidth / img.width,
                 orientation: 1
             }).then(() => {
                 overideCroppieZoom();
@@ -55,14 +55,21 @@ const croppieInit = (imgSrc) => {
             imageResetBtn.onclick = () => {
                 croppieInst.bind({
                     url: imgSrc,
-                    zoom: (QVGAWidth < img.width) ? QVGAWidth / img.width : 1,
+                    zoom: QVGAWidth / img.width,
                     orientation: 1
                 })
             }
 
-            imageZoomInBtn.onclick = () => handleZoomInEvent(0.01)
+            imageZoomInBtn.onclick = () => handleZoomInEvent(0.05)
             
-            imageZoomOutBtn.onclick = () => handleZoomOutEvent(0.01)
+            imageZoomOutBtn.onclick = () => handleZoomOutEvent(0.05)
+
+            savePreviewImgBtn.onclick = () => {
+                croppieInst.result("blob", "viewport", 'jpeg').then(blob => {
+                    resizeImage(URL.createObjectURL(blob));
+                    previewModal.hide();
+                })
+            }
             
             const overideCroppieZoom = () => {
                 const currCropArea = document.querySelector(".cr-boundary");
@@ -86,6 +93,13 @@ const croppieInit = (imgSrc) => {
                     if(weelStatus === 1) handleZoomInEvent(0.05);
                     else handleZoomOutEvent(0.05);
                 }, true)
+
+                currCropArea.addEventListener("touchmove", (event) => {
+                    if(event.targetTouches.length === 2){
+                        alert("zoom !")
+                    }
+                })
+                
             }
             
             const handleZoomInEvent = (zoomRatio) => {
@@ -95,6 +109,11 @@ const croppieInit = (imgSrc) => {
             
             const handleZoomOutEvent = (zoomRatio) => {
                 let currZoomVal = croppieInst.get().zoom;
+                if(currZoomVal - zoomRatio < QVGAWidth / img.width && zoomRatio !== 0.01 ){
+                    handleZoomOutEvent(0.01);
+                    return
+                }
+
                 if (currZoomVal - zoomRatio >= QVGAWidth / img.width) croppieInst.setZoom(currZoomVal - zoomRatio);
             }
         }
@@ -120,7 +139,7 @@ const handleSubmitImageByMediaCapture = (elm) => {
             if (file.size > maxImgSize) alert("写真が大きすぎる !!!");
             setTimeout(() => {
                 croppieInit(URL.createObjectURL(file));
-            }, 200)
+            }, 150)
 
             previewModal.show();
         }
