@@ -48,8 +48,6 @@ const croppieInit = (imgSrc) => {
                 url: imgSrc,
                 zoom: QVGAWidth / img.width,
                 orientation: 1
-            }).then(() => {
-                overideCroppieZoom(croppieInst);
             })
 
             imageResetBtn.onclick = () => {
