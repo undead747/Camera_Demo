@@ -42,7 +42,7 @@ const croppieInit = (imgSrc) => {
 
             croppieInst = new Croppie(previewContent, {
                 viewport: { width: QVGAWidth, height: QVGAHeight },
-                enforceBoundary: false,
+                enforceBoundary: true,
                 showZoomer: false
             })
 
