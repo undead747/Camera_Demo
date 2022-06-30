@@ -662,8 +662,8 @@
         self.elements.zoomer.addEventListener('change', change);
 
         if (self.options.mouseWheelZoom) {
-            self.elements.boundary.addEventListener('mousewheel', scroll);
-            self.elements.boundary.addEventListener('DOMMouseScroll', scroll);
+            // self.elements.boundary.addEventListener('mousewheel', scroll);
+            // self.elements.boundary.addEventListener('DOMMouseScroll', scroll);
         }
     }
 
