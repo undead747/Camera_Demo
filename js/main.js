@@ -46,7 +46,7 @@ const croppieInit = (imgSrc) => {
 
             croppieInst.bind({
                 url: imgSrc,
-                zoom: QVGAWidth / img.width,
+                zoom: (QVGAWidth < img.width) ? QVGAWidth / img.width : 1,
                 orientation: 1
             })
 
