@@ -636,6 +636,7 @@
         }
 
         function scroll(ev) {
+            debugger
             var delta, targetZoom;
 
             if(self.options.mouseWheelZoom === 'ctrl' && ev.ctrlKey !== true){

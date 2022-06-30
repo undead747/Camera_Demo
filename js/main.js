@@ -23,27 +23,51 @@ const resultImg = document.querySelector(".image-result");
 
 const previewModal = new bootstrap.Modal(document.getElementById("preview-modal"), {});
 const loadingModal = document.querySelector('.loading-modal');
+
 let croppieInst = null;
+
+const QVGAWidth = 240,
+      QVGAHeight = 320
+      QVGARatio = 3/4;
 
 const croppieInit = (imgSrc) => {
     const img = new Image();
+
     if (imgSrc) {
         img.src = imgSrc;
         img.onload = () => {
             if (croppieInst) croppieInst.destroy();
+            
             croppieInst = new Croppie(previewContent, {
-                viewport: { width: 240, height: 320 },
+                viewport: { width: QVGAWidth, height: QVGAHeight },
                 enforceBoundary: false,
-                showZoomer: false,
-                customClass: "fuck"
+                showZoomer: false
             })
 
             croppieInst.bind({
                 url: imgSrc,
-                points: [0, 160, 0, 0],
-                orientation: 1,
-                zoom: 240 / img.width 
+                zoom: QVGAWidth / img.width,
+                orientation: 1
             })
+
+            imageResetBtn.onclick = () => {
+                console.log(croppieInst.get())
+                croppieInst.bind({
+                    url: imgSrc,
+                    zoom: QVGAWidth / img.width,
+                    orientation: 1
+                })
+            }
+            
+            imageZoomInBtn.onclick = () => {
+                let currZoomVal = croppieInst.get().zoom;
+                croppieInst.setZoom(currZoomVal + 0.01);
+            }
+            
+            imageZoomOutBtn.onclick = () => {
+                let currZoomVal = croppieInst.get().zoom;
+                if(currZoomVal - 0.01 >= QVGAWidth / img.width) croppieInst.setZoom(currZoomVal - 0.01);
+            }
         }
     }
 }
