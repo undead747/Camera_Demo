@@ -36,6 +36,8 @@ const croppieInit = (imgSrc) => {
     if (imgSrc) {
         img.src = imgSrc;
         img.onload = () => {
+            const defaultZoomRatio = QVGAWidth / img.width;
+
             if (croppieInst) croppieInst.destroy();
 
             croppieInst = new Croppie(previewContent, {
@@ -46,7 +48,7 @@ const croppieInit = (imgSrc) => {
 
             croppieInst.bind({
                 url: imgSrc,
-                 zoom: QVGAWidth / img.width,
+                 zoom: defaultZoomRatio,
                 orientation: 1
             }).then(() => {
                 overideCroppieZoom();
@@ -55,7 +57,7 @@ const croppieInit = (imgSrc) => {
             imageResetBtn.onclick = () => {
                 croppieInst.bind({
                     url: imgSrc,
-                    zoom: QVGAWidth / img.width,
+                    zoom: defaultZoomRatio,
                     orientation: 1
                 })
             }
@@ -95,7 +97,8 @@ const croppieInit = (imgSrc) => {
                 }, true)
 
                 currCropArea.addEventListener("touchmove", (event) => {
-                    if(event.targetTouches.length === 2){
+                    let currZoomVal = overideCroppieZoom().zoom;
+                    if(event.targetTouches.length === 2 && currZoomVal < defaultZoomRatio){
                         event.preventDefault();
                         event.stopImmediatePropagation();
                     }
