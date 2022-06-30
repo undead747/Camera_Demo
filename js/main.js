@@ -97,10 +97,13 @@ const croppieInit = (imgSrc) => {
                 }, true)
 
                 currCropArea.addEventListener("touchmove", (event) => {
-                    let currZoomVal = overideCroppieZoom().zoom;
-                    if(event.targetTouches.length === 2 && currZoomVal < defaultZoomRatio){
-                        event.preventDefault();
-                        event.stopImmediatePropagation();
+                    if(event.targetTouches.length === 2){
+                        let currZoomVal = overideCroppieZoom().zoom;
+
+                        if((currZoomVal + 0.01) <= defaultZoomRatio){
+                            event.preventDefault();
+                            event.stopImmediatePropagation();
+                        }
                     }
                 })
                 
