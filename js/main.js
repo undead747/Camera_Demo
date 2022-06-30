@@ -139,7 +139,7 @@ const handleSubmitImageByMediaCapture = (elm) => {
             if (file.size > maxImgSize) alert("写真が大きすぎる !!!");
             setTimeout(() => {
                 croppieInit(URL.createObjectURL(file));
-            }, 150)
+            }, 200)
 
             previewModal.show();
         }
