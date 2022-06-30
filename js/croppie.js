@@ -636,7 +636,6 @@
         }
 
         function scroll(ev) {
-            debugger
             var delta, targetZoom;
 
             if(self.options.mouseWheelZoom === 'ctrl' && ev.ctrlKey !== true){
@@ -662,8 +661,8 @@
         self.elements.zoomer.addEventListener('change', change);
 
         if (self.options.mouseWheelZoom) {
-            // self.elements.boundary.addEventListener('mousewheel', scroll);
-            // self.elements.boundary.addEventListener('DOMMouseScroll', scroll);
+            self.elements.boundary.addEventListener('mousewheel', scroll);
+            self.elements.boundary.addEventListener('DOMMouseScroll', scroll);
         }
     }
 

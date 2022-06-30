@@ -27,8 +27,8 @@ const loadingModal = document.querySelector('.loading-modal');
 let croppieInst = null;
 
 const QVGAWidth = 240,
-      QVGAHeight = 320
-      QVGARatio = 3/4;
+    QVGAHeight = 320
+QVGARatio = 3 / 4;
 
 const croppieInit = (imgSrc) => {
     const img = new Image();
@@ -37,7 +37,7 @@ const croppieInit = (imgSrc) => {
         img.src = imgSrc;
         img.onload = () => {
             if (croppieInst) croppieInst.destroy();
-            
+
             croppieInst = new Croppie(previewContent, {
                 viewport: { width: QVGAWidth, height: QVGAHeight },
                 enforceBoundary: false,
@@ -48,28 +48,66 @@ const croppieInit = (imgSrc) => {
                 url: imgSrc,
                 zoom: QVGAWidth / img.width,
                 orientation: 1
+            }).then(() => {
+                overideCroppieZoom(croppieInst);
             })
 
             imageResetBtn.onclick = () => {
-                console.log(croppieInst.get())
                 croppieInst.bind({
                     url: imgSrc,
                     zoom: QVGAWidth / img.width,
                     orientation: 1
                 })
             }
+
+            imageZoomInBtn.onclick = () => handleZoomInEvent()
             
-            imageZoomInBtn.onclick = () => {
+            imageZoomOutBtn.onclick = () => handleZoomOutEvent()
+            
+            const overideCroppieZoom = () => {
+                const currCropArea = document.querySelector(".cr-boundary");
+                
+                currCropArea.addEventListener('DOMMouseScroll', (event) => {
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    
+                    let weelStatus = getCurrentWeelStatus(event);
+                   
+                    if(weelStatus === 1) handleZoomInEvent();
+                    else handleZoomOutEvent();
+                }, true);
+                
+                currCropArea.addEventListener("mousewheel", (event) => {
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    
+                    let weelStatus = getCurrentWeelStatus(event);
+                   
+                    if(weelStatus === 1) handleZoomInEvent();
+                    else handleZoomOutEvent();
+                }, true)
+            }
+            
+            const handleZoomInEvent = () => {
                 let currZoomVal = croppieInst.get().zoom;
                 croppieInst.setZoom(currZoomVal + 0.01);
             }
             
-            imageZoomOutBtn.onclick = () => {
+            const handleZoomOutEvent = () => {
                 let currZoomVal = croppieInst.get().zoom;
-                if(currZoomVal - 0.01 >= QVGAWidth / img.width) croppieInst.setZoom(currZoomVal - 0.01);
+                if (currZoomVal - 0.01 >= QVGAWidth / img.width) croppieInst.setZoom(currZoomVal - 0.01);
             }
         }
     }
+}
+
+const getCurrentWeelStatus = (e) => {
+    var e = window.event || e;
+    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+
+    if(delta > 0) return 1;
+
+    return 0;
 }
 
 const handleSubmitImageByMediaCapture = (elm) => {
