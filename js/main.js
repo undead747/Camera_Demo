@@ -27,15 +27,15 @@ const loadingModal = document.querySelector('.loading-modal');
 let croppieInst = null;
 
 const QVGAWidth = 240,
-    QVGAHeight = 320
-QVGARatio = 3 / 4;
+      QVGAHeight = 320
+      QVGARatio = 3 / 4;
 
 const croppieInit = (imgSrc) => {
     const img = new Image();
 
     if (imgSrc) {
         img.src = imgSrc;
-        img.onload = () => {
+        img.onload = async() => {
             const defaultZoomRatio = QVGAWidth / img.width;
 
             if (croppieInst) croppieInst.destroy();
@@ -46,23 +46,29 @@ const croppieInit = (imgSrc) => {
                 showZoomer: false
             })
 
-            croppieInst.bind({
+            loadingModal.style.display = "block";
+            
+            await croppieInst.bind({
                 url: imgSrc,
                  zoom: defaultZoomRatio,
                 orientation: 1
             })
 
-            imageResetBtn.onclick = () => {
-                croppieInst.bind({
+            loadingModal.style.display = "none";
+
+            imageResetBtn.onclick = async() => {
+                loadingModal.style.display = "block";
+                await croppieInst.bind({
                     url: imgSrc,
                     zoom: defaultZoomRatio,
                     orientation: 1
                 })
+                loadingModal.style.display = "none";
             }
 
-            imageZoomInBtn.onclick = () => handleZoomInEvent(0.05)
+            imageZoomInBtn.onclick = () => handleZoomInEvent(0.02)
             
-            imageZoomOutBtn.onclick = () => handleZoomOutEvent(0.05)
+            imageZoomOutBtn.onclick = () => handleZoomOutEvent(0.02)
 
             savePreviewImgBtn.onclick = () => {
                 croppieInst.result("blob", "viewport", 'jpeg').then(blob => {
@@ -71,41 +77,41 @@ const croppieInit = (imgSrc) => {
                 })
             }
             
-            const overideCroppieZoom = () => {
-                const currCropArea = document.querySelector(".cr-boundary");
+            // const overideCroppieZoom = () => {
+            //     const currCropArea = document.querySelector(".cr-boundary");
                 
-                currCropArea.addEventListener('DOMMouseScroll', (event) => {
-                    event.preventDefault();
-                    event.stopImmediatePropagation();
+            //     currCropArea.addEventListener('DOMMouseScroll', (event) => {
+            //         event.preventDefault();
+            //         event.stopImmediatePropagation();
                     
-                    let weelStatus = getCurrentWeelStatus(event);
+            //         let weelStatus = getCurrentWeelStatus(event);
                    
-                    if(weelStatus === 1) handleZoomInEvent(0.05);
-                    else handleZoomOutEvent(0.05);
-                }, true);
+            //         if(weelStatus === 1) handleZoomInEvent(0.05);
+            //         else handleZoomOutEvent(0.05);
+            //     }, true);
                 
-                currCropArea.addEventListener("mousewheel", (event) => {
-                    event.preventDefault();
-                    event.stopImmediatePropagation();
+            //     currCropArea.addEventListener("mousewheel", (event) => {
+            //         event.preventDefault();
+            //         event.stopImmediatePropagation();
                     
-                    let weelStatus = getCurrentWeelStatus(event);
+            //         let weelStatus = getCurrentWeelStatus(event);
                    
-                    if(weelStatus === 1) handleZoomInEvent(0.05);
-                    else handleZoomOutEvent(0.05);
-                }, true)
+            //         if(weelStatus === 1) handleZoomInEvent(0.05);
+            //         else handleZoomOutEvent(0.05);
+            //     }, true)
 
-                // currCropArea.addEventListener("touchmove", (event) => {
-                //     if(event.targetTouches.length === 2){
-                //         let currZoomVal = overideCroppieZoom().zoom;
+            //     // currCropArea.addEventListener("touchmove", (event) => {
+            //     //     if(event.targetTouches.length === 2){
+            //     //         let currZoomVal = overideCroppieZoom().zoom;
 
-                //         if((currZoomVal + 0.01) <= defaultZoomRatio){
-                //             event.preventDefault();
-                //             event.stopImmediatePropagation();
-                //         }
-                //     }
-                // })
+            //     //         if((currZoomVal + 0.01) <= defaultZoomRatio){
+            //     //             event.preventDefault();
+            //     //             event.stopImmediatePropagation();
+            //     //         }
+            //     //     }
+            //     // })
                 
-            }
+            // }
             
             const handleZoomInEvent = (zoomRatio) => {
                 let currZoomVal = croppieInst.get().zoom;
@@ -129,6 +135,37 @@ const getCurrentWeelStatus = (e) => {
     return 0;
 }
 
+const drawImageInMiddleCanvas = (imgSrc) => {
+    let img = new Image();
+    let canvs = document.createElement('canvas');
+    img.src =  imgSrc;
+    
+    return new Promise((resolve, reject) => {
+        try {
+            img.onload = () => {
+                let canvasContext = canvs.getContext('2d');
+                canvasContext.fillStyle = "white";
+                if(img.width < img.height){
+                    canvs.width = img.width * 2;
+                    canvs.height = img.height * 3;
+
+                    canvasContext.drawImage(img, img.width / 2, img.height);
+                    resolve(canvs.toDataURL());
+                }else{
+                    canvs.width = img.width * 2;
+                    canvs.height = img.height * 5;
+              
+                    canvasContext.drawImage(img, img.width / 2, img.height * 2);
+                    resolve(canvs.toDataURL());
+                }
+
+           }
+        } catch (error) {
+            reject(error);
+        }
+     })
+}
+
 const handleSubmitImageByMediaCapture = (elm) => {
     elm.onchange = event => {
         const [file] = htmlMediaCapture.files;
@@ -137,9 +174,13 @@ const handleSubmitImageByMediaCapture = (elm) => {
 
         if (file) {
             if (file.size > maxImgSize) alert("写真が大きすぎる !!!");
-            setTimeout(() => {
-                croppieInit(URL.createObjectURL(file));
-            }, 200)
+            setTimeout(async() => {
+                loadingModal.style.display = "block";
+                let inputImgURL = URL.createObjectURL(file);
+                let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
+                croppieInit(drawnImgSrc);
+                loadingModal.style.display = "none";
+            }, 170)
 
             previewModal.show();
         }
