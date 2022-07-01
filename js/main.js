@@ -68,7 +68,8 @@ const croppieInit = (imgSrc) => {
 
                     savePreviewImgBtn.onclick = () => {
                         croppieInst.result({ type: "blob", format: "jpeg", size: 'viewport' }).then(Blob => {
-                            resizeImage(URL.createObjectURL(Blob));
+                            resultImg.src = URL.createObjectURL(Blob);
+                            // resizeImage(URL.createObjectURL(Blob));
                             previewModal.hide();
                         })
                     }
