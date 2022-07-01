@@ -144,27 +144,15 @@ const drawImageInMiddleCanvas = (imgSrc) => {
         try {
             img.onload = () => {
                 let canvasContext = canvs.getContext('2d');
+               
+                canvs.width = img.width * 2;
+                canvs.height = img.height * 2;
 
-                if (img.width < img.height) {
-                    canvs.width = img.width * 2;
-                    canvs.height = img.height * 2;
+                canvasContext.fillStyle = "grey";
+                canvasContext.fillRect(0, 0, canvs.width, canvs.height);
 
-                    canvasContext.fillStyle = "white";
-                    canvasContext.fillRect(0, 0, canvs.width, canvs.height);
-
-                    canvasContext.drawImage(img, img.width / 2, img.height / 2);
-                    resolve(canvs.toDataURL());
-                } else {
-                    canvs.width = img.width * 2;
-                    canvs.height = img.height * 5;
-
-                    canvasContext.fillStyle = "white";
-                    canvasContext.fillRect(0, 0, canvs.width, canvs.height);
-
-                    canvasContext.drawImage(img, img.width / 2, img.height * 2);
-                    resolve(canvs.toDataURL());
-                }
-
+                canvasContext.drawImage(img, img.width / 2, img.height / 2);
+                resolve(canvs.toDataURL());
             }
         } catch (error) {
             reject(error);
@@ -197,8 +185,8 @@ const handleSubmitImageByMediaCapture = (elm) => {
             
             setTimeout(async () => {
                 let inputImgURL = URL.createObjectURL(file);
-                // let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
-                await croppieInit(inputImgURL);
+                let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
+                await croppieInit(drawnImgSrc);
                 loadingAnimation().end();
             }, 170)
 
