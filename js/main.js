@@ -152,12 +152,13 @@ const drawImageInMiddleCanvas = (imgSrc) => {
                 // if this big freaking image is a landscape, downgrade it width to 1920 and calculate it height base on it origin width vs 1920 ratio 
                 if(img.width > img.height && img.width > 1920 && img.height > 1080){
                     imgWidth = 1920;
-                    imgHeight = (1920 / imgWidth) * img.height;
+                    imgHeight = (1920 / img.width) * img.height;
                 }
                 
                 if(img.height > img.width && img.height > 1920 && img.width > 1080){
+                    debugger
                     imgWidth = 1080;
-                    imgHeight = (1080 / imgWidth) * img.height;
+                    imgHeight = (1080 / img.width) * img.height;
                 }
                 
                 canvs.width = imgWidth * 2;
