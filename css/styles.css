@@ -66,6 +66,24 @@ button{
   position: relative;
 }
 
+.preview-modal__content .cr-boundary{
+  position: relative;
+}
+
+.preview-modal__content .cr-boundary::after{
+  content: "";
+  width: 240px;
+  height: 320px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url("../images/white_line_face-icon-blue.svg");
+  background-size:     contain;                   
+  background-repeat:   no-repeat;
+  background-position: bottom;            
+ 
+}
+
 .preview-image__possition-up {
   position: absolute;
   top: 0;
