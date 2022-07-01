@@ -27,110 +27,110 @@ const loadingModal = document.querySelector('.loading-modal');
 let croppieInst = null;
 
 const QVGAWidth = 240,
-      QVGAHeight = 320
-      QVGARatio = 3 / 4;
+    QVGAHeight = 320
+QVGARatio = 3 / 4;
 
 const croppieInit = (imgSrc) => {
-    const img = new Image();
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        if (croppieInst) croppieInst.destroy();
+        if (imgSrc) {
+            img.src = imgSrc;
+            try {
+                img.onload = () => {
+                    const defaultZoomRatio = QVGAWidth / img.width;
 
-    if (imgSrc) {
-        img.src = imgSrc;
-        img.onload = async() => {
-            const defaultZoomRatio = QVGAWidth / img.width;
+                    croppieInst = new Croppie(previewContent, {
+                        viewport: { width: QVGAWidth, height: QVGAHeight },
+                        enforceBoundary: true,
+                        showZoomer: false
+                    })
 
-            if (croppieInst) croppieInst.destroy();
+                    croppieInst.bind({
+                        url: imgSrc,
+                        zoom: defaultZoomRatio,
+                        orientation: 1
+                    }).then(() => {
+                        resolve("work");
+                    })
 
-            croppieInst = new Croppie(previewContent, {
-                viewport: { width: QVGAWidth, height: QVGAHeight },
-                enforceBoundary: true,
-                showZoomer: false
-            })
+                    imageResetBtn.onclick = async () => {
+                        await croppieInst.bind({
+                            url: imgSrc,
+                            zoom: defaultZoomRatio,
+                            orientation: 1
+                        })
+                    }
 
-            loadingModal.style.display = "block";
-            
-            await croppieInst.bind({
-                url: imgSrc,
-                 zoom: defaultZoomRatio,
-                orientation: 1
-            })
+                    imageZoomInBtn.onclick = () => handleZoomInEvent(0.02)
 
-            loadingModal.style.display = "none";
+                    imageZoomOutBtn.onclick = () => handleZoomOutEvent(0.02)
 
-            imageResetBtn.onclick = async() => {
-                loadingModal.style.display = "block";
-                await croppieInst.bind({
-                    url: imgSrc,
-                    zoom: defaultZoomRatio,
-                    orientation: 1
-                })
-                loadingModal.style.display = "none";
-            }
+                    savePreviewImgBtn.onclick = () => {
+                        croppieInst.result({ type: "blob", format: "jpeg", size: 'viewport' }).then(Blob => {
+                            resizeImage(URL.createObjectURL(Blob));
+                            previewModal.hide();
+                        })
+                    }
 
-            imageZoomInBtn.onclick = () => handleZoomInEvent(0.02)
-            
-            imageZoomOutBtn.onclick = () => handleZoomOutEvent(0.02)
+                    // const overideCroppieZoom = () => {
+                    //     const currCropArea = document.querySelector(".cr-boundary");
 
-            savePreviewImgBtn.onclick = () => {
-                croppieInst.result("blob", "viewport", 'jpeg').then(blob => {
-                    resizeImage(URL.createObjectURL(blob));
-                    previewModal.hide();
-                })
-            }
-            
-            // const overideCroppieZoom = () => {
-            //     const currCropArea = document.querySelector(".cr-boundary");
-                
-            //     currCropArea.addEventListener('DOMMouseScroll', (event) => {
-            //         event.preventDefault();
-            //         event.stopImmediatePropagation();
-                    
-            //         let weelStatus = getCurrentWeelStatus(event);
-                   
-            //         if(weelStatus === 1) handleZoomInEvent(0.05);
-            //         else handleZoomOutEvent(0.05);
-            //     }, true);
-                
-            //     currCropArea.addEventListener("mousewheel", (event) => {
-            //         event.preventDefault();
-            //         event.stopImmediatePropagation();
-                    
-            //         let weelStatus = getCurrentWeelStatus(event);
-                   
-            //         if(weelStatus === 1) handleZoomInEvent(0.05);
-            //         else handleZoomOutEvent(0.05);
-            //     }, true)
+                    //     currCropArea.addEventListener('DOMMouseScroll', (event) => {
+                    //         event.preventDefault();
+                    //         event.stopImmediatePropagation();
 
-            //     // currCropArea.addEventListener("touchmove", (event) => {
-            //     //     if(event.targetTouches.length === 2){
-            //     //         let currZoomVal = overideCroppieZoom().zoom;
+                    //         let weelStatus = getCurrentWeelStatus(event);
 
-            //     //         if((currZoomVal + 0.01) <= defaultZoomRatio){
-            //     //             event.preventDefault();
-            //     //             event.stopImmediatePropagation();
-            //     //         }
-            //     //     }
-            //     // })
-                
-            // }
-            
-            const handleZoomInEvent = (zoomRatio) => {
-                let currZoomVal = croppieInst.get().zoom;
-                croppieInst.setZoom(currZoomVal + zoomRatio);
-            }
-            
-            const handleZoomOutEvent = (zoomRatio) => {
-                let currZoomVal = croppieInst.get().zoom;
-                croppieInst.setZoom(currZoomVal - zoomRatio);
+                    //         if(weelStatus === 1) handleZoomInEvent(0.05);
+                    //         else handleZoomOutEvent(0.05);
+                    //     }, true);
+
+                    //     currCropArea.addEventListener("mousewheel", (event) => {
+                    //         event.preventDefault();
+                    //         event.stopImmediatePropagation();
+
+                    //         let weelStatus = getCurrentWeelStatus(event);
+
+                    //         if(weelStatus === 1) handleZoomInEvent(0.05);
+                    //         else handleZoomOutEvent(0.05);
+                    //     }, true)
+
+                    //     // currCropArea.addEventListener("touchmove", (event) => {
+                    //     //     if(event.targetTouches.length === 2){
+                    //     //         let currZoomVal = overideCroppieZoom().zoom;
+
+                    //     //         if((currZoomVal + 0.01) <= defaultZoomRatio){
+                    //     //             event.preventDefault();
+                    //     //             event.stopImmediatePropagation();
+                    //     //         }
+                    //     //     }
+                    //     // })
+
+                    // }
+
+                    const handleZoomInEvent = (zoomRatio) => {
+                        let currZoomVal = croppieInst.get().zoom;
+                        croppieInst.setZoom(currZoomVal + zoomRatio);
+                    }
+
+                    const handleZoomOutEvent = (zoomRatio) => {
+                        let currZoomVal = croppieInst.get().zoom;
+                        croppieInst.setZoom(currZoomVal - zoomRatio);
+                    }
+                }
+            } catch (error) {
+                reject(error);
             }
         }
-    }
+    })
 }
 
 const getCurrentWeelStatus = (e) => {
     var e = window.event || e;
     var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
 
-    if(delta > 0) return 1;
+    if (delta > 0) return 1;
 
     return 0;
 }
@@ -138,54 +138,74 @@ const getCurrentWeelStatus = (e) => {
 const drawImageInMiddleCanvas = (imgSrc) => {
     let img = new Image();
     let canvs = document.createElement('canvas');
-    img.src =  imgSrc;
-    
+    img.src = imgSrc;
+
     return new Promise((resolve, reject) => {
         try {
             img.onload = () => {
                 let canvasContext = canvs.getContext('2d');
-                canvasContext.fillStyle = "white";
-                if(img.width < img.height){
-                    canvs.width = img.width * 2;
-                    canvs.height = img.height * 3;
 
-                    canvasContext.drawImage(img, img.width / 2, img.height);
+                if (img.width < img.height) {
+                    canvs.width = img.width * 2;
+                    canvs.height = img.height * 2;
+
+                    canvasContext.fillStyle = "white";
+                    canvasContext.fillRect(0, 0, canvs.width, canvs.height);
+
+                    canvasContext.drawImage(img, img.width / 2, img.height / 2);
                     resolve(canvs.toDataURL());
-                }else{
+                } else {
                     canvs.width = img.width * 2;
                     canvs.height = img.height * 5;
-              
+
+                    canvasContext.fillStyle = "white";
+                    canvasContext.fillRect(0, 0, canvs.width, canvs.height);
+
                     canvasContext.drawImage(img, img.width / 2, img.height * 2);
                     resolve(canvs.toDataURL());
                 }
 
-           }
+            }
         } catch (error) {
             reject(error);
         }
-     })
+    })
+}
+
+const loadingAnimation = () => {
+    const start = () => {
+        loadingModal.style.display = "block";
+    }
+    const end = () => loadingModal.style.display = "none";
+
+    return {
+        start,
+        end
+    }
 }
 
 const handleSubmitImageByMediaCapture = (elm) => {
-    elm.onchange = event => {
+    elm.onchange = async event => {
         const [file] = htmlMediaCapture.files;
         // 1920 x 1080 img
         const maxImgSize = 6220800;
 
         if (file) {
             if (file.size > maxImgSize) alert("写真が大きすぎる !!!");
-            setTimeout(async() => {
-                loadingModal.style.display = "block";
+            await previewModal.show();
+            loadingAnimation().start();
+            
+            setTimeout(async () => {
                 let inputImgURL = URL.createObjectURL(file);
                 let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
-                croppieInit(drawnImgSrc);
-                loadingModal.style.display = "none";
+                await croppieInit(drawnImgSrc);
+                loadingAnimation().end();
             }, 170)
 
-            previewModal.show();
         }
     }
 }
+
 
 const handleImageChange = () => {
     downloadImgBtn.disabled = true;
