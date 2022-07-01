@@ -69,7 +69,7 @@ const croppieInit = (imgSrc) => {
                     savePreviewImgBtn.onclick = () => {
                         croppieInst.result({ type: "blob", format: "jpeg", size: 'viewport' }).then(Blob => {
                             resultImg.src = URL.createObjectURL(Blob);
-                            resizeImage(URL.createObjectURL(Blob));
+                            // resizeImage(URL.createObjectURL(Blob), [240, 320]);
                             previewModal.hide();
                         })
                     }
@@ -139,17 +139,30 @@ const getCurrentWeelStatus = (e) => {
 const drawImageInMiddleCanvas = (imgSrc) => {
     let img = new Image();
     let canvs = document.createElement('canvas');
+    let canvasContext = canvs.getContext('2d');
+    
     img.src = imgSrc;
 
     return new Promise((resolve, reject) => {
         try {
             img.onload = () => {
-                let canvasContext = canvs.getContext('2d');
-               
-                canvs.width = img.width * 2;
-                canvs.height = img.height * 2;
+                let imgWidth = img.width,
+                    imgHeight = img.height;
 
-                canvasContext.drawImage(img, img.width / 2, img.height / 2);
+                if(img.width > img.height && img.width > 1920 && img.height > 1080){
+                    imgWidth = 1920;
+                    imgHeight = 1080;
+                }
+                
+                if(img.height > img.width && img.height > 1920 && img.width > 1080){
+                    imgHeight = 1920;
+                    imgWidth = 1080;
+                }
+                
+                canvs.width = imgWidth * 2;
+                canvs.height = imgHeight * 2;
+
+                canvasContext.drawImage(img, 0, 0, img.width, img.height, imgWidth / 2, imgHeight / 2, imgWidth, imgHeight);
                 resolve(canvs.toDataURL());
             }
         } catch (error) {
@@ -177,6 +190,7 @@ const handleSubmitImageByMediaCapture = (elm) => {
         const maxImgSize = 6220800;
 
         if (file) {
+            console.log(file)
             if (file.size > maxImgSize) alert("写真が大きすぎる !!!");
             await previewModal.show();
             loadingAnimation().start();
@@ -222,11 +236,11 @@ const handleClosePreviewModal = () => {
     }
 }
 
-const resizeImage = (imgSrc) => {
+const resizeImage = (imgSrc, [width = 1920, height = 1080]) => {
     let finalCanvas = document.createElement("canvas");
     let img = new Image();
-    const finalWidth = 240;
-    const finalHeight = 320;
+    const finalWidth = width;
+    const finalHeight = height;
 
     img.onload = function () {
         finalCanvas.width = finalWidth;
