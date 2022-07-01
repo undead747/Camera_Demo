@@ -156,8 +156,8 @@ const drawImageInMiddleCanvas = (imgSrc) => {
                 }
                 
                 if(img.height > img.width && img.height > 1920 && img.width > 1080){
-                    imgHeight = 1920;
                     imgWidth = 1080;
+                    imgHeight = (1080 / imgWidth) * img.height;
                 }
                 
                 canvs.width = imgWidth * 2;
