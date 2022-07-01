@@ -69,7 +69,7 @@ const croppieInit = (imgSrc) => {
                     savePreviewImgBtn.onclick = () => {
                         croppieInst.result({ type: "blob", format: "jpeg", size: 'viewport' }).then(Blob => {
                             resultImg.src = URL.createObjectURL(Blob);
-                            // resizeImage(URL.createObjectURL(Blob));
+                            resizeImage(URL.createObjectURL(Blob));
                             previewModal.hide();
                         })
                     }
@@ -149,9 +149,6 @@ const drawImageInMiddleCanvas = (imgSrc) => {
                 canvs.width = img.width * 2;
                 canvs.height = img.height * 2;
 
-                canvasContext.fillStyle = "grey";
-                canvasContext.fillRect(0, 0, canvs.width, canvs.height);
-
                 canvasContext.drawImage(img, img.width / 2, img.height / 2);
                 resolve(canvs.toDataURL());
             }
@@ -186,8 +183,8 @@ const handleSubmitImageByMediaCapture = (elm) => {
             
             setTimeout(async () => {
                 let inputImgURL = URL.createObjectURL(file);
-                // let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
-                await croppieInit(inputImgURL);
+                let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
+                await croppieInit(drawnImgSrc);
                 loadingAnimation().end();
             }, 170)
 
