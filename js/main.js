@@ -67,7 +67,7 @@ const croppieInit = (imgSrc) => {
                     imageZoomOutBtn.onclick = () => handleZoomOutEvent(0.02)
 
                     savePreviewImgBtn.onclick = () => {
-                        croppieInst.result({ type: "blob", format: "jpeg", size: 'viewport' }).then(Blob => {
+                        croppieInst.result({ type: "blob", format: "jpeg", size: 'viewport', quality: 1, circle: false }).then(Blob => {
                             resultImg.src = URL.createObjectURL(Blob);
                             // resizeImage(URL.createObjectURL(Blob), [240, 320]);
                             previewModal.hide();
