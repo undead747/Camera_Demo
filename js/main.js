@@ -153,12 +153,12 @@ const drawImageInMiddleCanvas = (imgSrc) => {
                 let imgWidth = QuadVGAWidth,
                     imgHeight = QuadVGAWidth * img.height / img.width;
 
-                canvs.width = imgWidth + QVGAWidth * 2;
-                canvs.height = imgHeight + QVGAHeight * 2;
+                canvs.width = imgWidth + QVGAWidth;
+                canvs.height = imgHeight + QVGAHeight;
 
                 canvasContext.fillStyle = "white";
                 canvasContext.fillRect(0, 0, canvs.width, canvs.height);
-                canvasContext.drawImage(img, 0, 0, img.width, img.height, QVGAWidth, QVGAHeight, imgWidth, imgHeight);
+                canvasContext.drawImage(img, 0, 0, img.width, img.height, QVGAWidth / 2, QVGAHeight / 2, imgWidth, imgHeight);
                 resolve(canvs.toDataURL());
             }
         } catch (error) {
