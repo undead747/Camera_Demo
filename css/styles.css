@@ -6,7 +6,7 @@ img {
   max-width: 100%;
 }
 
-button{
+button {
   touch-action: none;
 }
 
@@ -35,11 +35,11 @@ button{
 }
 
 #preview-modal .modal-header,
-#preview-modal .modal-footer{
+#preview-modal .modal-footer {
   padding: 0.2em 0.5em;
 }
 
-.preview-modal__content{
+.preview-modal__content {
   width: 240px;
   height: 320px;
   margin: 0 auto;
@@ -53,7 +53,7 @@ button{
   justify-content: space-around;
 }
 
-@media only screen and (min-width: 768px){
+@media only screen and (min-width: 768px) {
   .preview-image__controller {
     width: 50%;
   }
@@ -66,11 +66,11 @@ button{
   position: relative;
 }
 
-.preview-modal__content .cr-boundary{
+.preview-modal__content .cr-boundary {
   position: relative;
 }
 
-.preview-modal__content .cr-boundary::before{
+.preview-modal__content .cr-boundary::before {
   content: "";
   width: 240px;
   height: 320px;
@@ -78,14 +78,14 @@ button{
   top: 0;
   left: 0;
   background-image: url("../images/icon_layer1.png");
-  background-size:     contain;                   
-  background-repeat:   no-repeat;
-  background-position: bottom; 
-  opacity: 0.5;           
-  
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  opacity: 0.5;
+
 }
 
-.preview-modal__content .cr-boundary::after{
+.preview-modal__content .cr-boundary::after {
   content: "";
   width: 240px;
   height: 320px;
@@ -93,9 +93,9 @@ button{
   top: 0;
   left: 0;
   background-image: url("../images/icon_layer2.png");
-  background-size:     contain;                   
-  background-repeat:   no-repeat;
-  background-position: bottom; 
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom;
 }
 
 .preview-image__possition-up {
@@ -131,7 +131,8 @@ button{
   justify-content: center;
   align-items: center;
 }
-.preview-image__zoom-controller > *{
+
+.preview-image__zoom-controller>* {
   width: 5rem;
 }
 
@@ -149,12 +150,12 @@ button{
   display: block;
 }
 
-.preview-modal__reset-btn{
+.preview-modal__reset-btn {
   display: flex;
   justify-content: center;
 }
 
-.crop-area-icon{
+.crop-area-icon {
   position: absolute;
   top: 63%;
   left: 50%;
@@ -164,7 +165,7 @@ button{
   opacity: 0.8;
 }
 
-.loading-modal{
+.loading-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -175,7 +176,7 @@ button{
   background: rgba(0, 0, 0, 0.7);
 }
 
-.loading-modal__content{
+.loading-modal__content {
   position: absolute;
   z-index: 1;
   top: 50%;
