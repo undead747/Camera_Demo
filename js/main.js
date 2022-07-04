@@ -213,6 +213,5 @@ const resizeImage = (imgSrc, [width = 1920, height = 1080]) => {
 document.addEventListener('DOMContentLoaded', () => {
     handleSubmitImageByMediaCapture(htmlMediaCapture);
     handleClosePreviewModal();
-    handleVideoByUserMedia();
     handleImageDownload();
 })
