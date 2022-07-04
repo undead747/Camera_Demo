@@ -151,7 +151,7 @@ const drawImageInMiddleCanvas = (imgSrc) => {
         try {
             img.onload = () => {
                 let imgWidth = QuadVGAWidth,
-                    imgHeight = (QuadVGAWidth / img.width) * img.height;
+                    imgHeight = QuadVGAWidth * img.height / img.width;
 
                 canvs.width = imgWidth + QVGAWidth * 2;
                 canvs.height = imgHeight + QVGAHeight * 2;

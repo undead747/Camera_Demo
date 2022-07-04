@@ -70,6 +70,21 @@ button{
   position: relative;
 }
 
+.preview-modal__content .cr-boundary::before{
+  content: "";
+  width: 240px;
+  height: 320px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url("../images/icon_layer1.png");
+  background-size:     contain;                   
+  background-repeat:   no-repeat;
+  background-position: bottom; 
+  opacity: 0.5;           
+  
+}
+
 .preview-modal__content .cr-boundary::after{
   content: "";
   width: 240px;
@@ -77,12 +92,10 @@ button{
   position: absolute;
   top: 0;
   left: 0;
-  background-image: url("../images/20220704_icon.png");
+  background-image: url("../images/icon_layer2.png");
   background-size:     contain;                   
   background-repeat:   no-repeat;
   background-position: bottom; 
-  opacity: 0.5;           
- 
 }
 
 .preview-image__possition-up {
