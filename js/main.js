@@ -30,6 +30,9 @@ const QVGAWidth = 240,
     QVGAHeight = 320
 QVGARatio = 3 / 4;
 
+const QuadVGAWidth = 960,
+      QuadVGAHeight = 1280;
+
 const croppieInit = (imgSrc) => {
     return new Promise((resolve, reject) => {
         const img = new Image();
@@ -67,9 +70,10 @@ const croppieInit = (imgSrc) => {
                     imageZoomOutBtn.onclick = () => handleZoomOutEvent(0.02)
 
                     savePreviewImgBtn.onclick = () => {
-                        croppieInst.result({ type: "blob", format: "jpeg", size: 'viewport', quality: 1, circle: false }).then(Blob => {
+                        croppieInst.result({ type: "blob", format: "jpeg", size: {width: 240, height: 320}, quality: 1, circle: false }).then(Blob => {
                             resultImg.src = URL.createObjectURL(Blob);
                             // resizeImage(URL.createObjectURL(Blob), [240, 320]);
+                            htmlMediaCapture.value = '';
                             previewModal.hide();
                         })
                     }
@@ -146,25 +150,15 @@ const drawImageInMiddleCanvas = (imgSrc) => {
     return new Promise((resolve, reject) => {
         try {
             img.onload = () => {
-                let imgWidth = img.width,
-                    imgHeight = img.height;
+                let imgWidth = QuadVGAWidth,
+                    imgHeight = (QuadVGAWidth / img.width) * img.height;
 
-                // if this big freaking image is a landscape, downgrade it width to 1920 and calculate it height base on it origin width vs 1920 ratio 
-                if(img.width > img.height && img.width > 1920 && img.height > 1080){
-                    imgWidth = 1920;
-                    imgHeight = (1920 / img.width) * img.height;
-                }
-                
-                if(img.height > img.width && img.height > 1920 && img.width > 1080){
-                    debugger
-                    imgWidth = 1080;
-                    imgHeight = (1080 / img.width) * img.height;
-                }
-                
-                canvs.width = imgWidth * 2;
-                canvs.height = imgHeight * 2;
+                canvs.width = imgWidth + QVGAWidth * 2;
+                canvs.height = imgHeight + QVGAHeight * 2;
 
-                canvasContext.drawImage(img, 0, 0, img.width, img.height, imgWidth / 2, imgHeight / 2, imgWidth, imgHeight);
+                canvasContext.fillStyle = "white";
+                canvasContext.fillRect(0, 0, canvs.width, canvs.height);
+                canvasContext.drawImage(img, 0, 0, img.width, img.height, QVGAWidth, QVGAHeight, imgWidth, imgHeight);
                 resolve(canvs.toDataURL());
             }
         } catch (error) {
@@ -188,12 +182,8 @@ const loadingAnimation = () => {
 const handleSubmitImageByMediaCapture = (elm) => {
     elm.onchange = async event => {
         const [file] = htmlMediaCapture.files;
-        // 1920 x 1080 img
-        const maxImgSize = 6220800;
 
         if (file) {
-            console.log(file)
-            if (file.size > maxImgSize) alert("写真が大きすぎる !!!");
             await previewModal.show();
             loadingAnimation().start();
             
@@ -265,6 +255,13 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 
+
+
+
+
+
+
+//------------------------------------------------ Archive ------------------------------------------------
 
 const hasGetUserMedia = () => {
     return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||

@@ -77,10 +77,11 @@ button{
   position: absolute;
   top: 0;
   left: 0;
-  background-image: url("../images/white_line_face-icon-blue.svg");
+  background-image: url("../images/20220704_icon.png");
   background-size:     contain;                   
   background-repeat:   no-repeat;
-  background-position: bottom;            
+  background-position: bottom; 
+  opacity: 0.5;           
  
 }
 
