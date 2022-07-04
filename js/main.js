@@ -27,8 +27,8 @@ const loadingModal = document.querySelector('.loading-modal');
 let croppieInst = null;
 
 const QVGAWidth = 240,
-    QVGAHeight = 320
-QVGARatio = 3 / 4;
+      QVGAHeight = 320
+      QVGARatio = 3 / 4;
 
 const QuadVGAWidth = 960,
       QuadVGAHeight = 1280;
@@ -72,47 +72,10 @@ const croppieInit = (imgSrc) => {
                     savePreviewImgBtn.onclick = () => {
                         croppieInst.result({ type: "blob", format: "jpeg", size: {width: 240, height: 320}, quality: 1, circle: false }).then(Blob => {
                             resultImg.src = URL.createObjectURL(Blob);
-                            // resizeImage(URL.createObjectURL(Blob), [240, 320]);
                             htmlMediaCapture.value = '';
                             previewModal.hide();
                         })
                     }
-
-                    // const overideCroppieZoom = () => {
-                    //     const currCropArea = document.querySelector(".cr-boundary");
-
-                    //     currCropArea.addEventListener('DOMMouseScroll', (event) => {
-                    //         event.preventDefault();
-                    //         event.stopImmediatePropagation();
-
-                    //         let weelStatus = getCurrentWeelStatus(event);
-
-                    //         if(weelStatus === 1) handleZoomInEvent(0.05);
-                    //         else handleZoomOutEvent(0.05);
-                    //     }, true);
-
-                    //     currCropArea.addEventListener("mousewheel", (event) => {
-                    //         event.preventDefault();
-                    //         event.stopImmediatePropagation();
-
-                    //         let weelStatus = getCurrentWeelStatus(event);
-
-                    //         if(weelStatus === 1) handleZoomInEvent(0.05);
-                    //         else handleZoomOutEvent(0.05);
-                    //     }, true)
-
-                    //     // currCropArea.addEventListener("touchmove", (event) => {
-                    //     //     if(event.targetTouches.length === 2){
-                    //     //         let currZoomVal = overideCroppieZoom().zoom;
-
-                    //     //         if((currZoomVal + 0.01) <= defaultZoomRatio){
-                    //     //             event.preventDefault();
-                    //     //             event.stopImmediatePropagation();
-                    //     //         }
-                    //     //     }
-                    //     // })
-
-                    // }
 
                     const handleZoomInEvent = (zoomRatio) => {
                         let currZoomVal = croppieInst.get().zoom;
@@ -253,123 +216,3 @@ document.addEventListener('DOMContentLoaded', () => {
     handleVideoByUserMedia();
     handleImageDownload();
 })
-
-
-
-
-
-
-
-
-//------------------------------------------------ Archive ------------------------------------------------
-
-const hasGetUserMedia = () => {
-    return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia || navigator.msGetUserMedia)
-}
-
-const handleVideoByUserMedia = () => {
-    let streaming = false;
-
-    captureBtn.disabled = true;
-
-    startVideoBtn.onclick = (event) => {
-        // if(hasGetUserMedia()){
-        navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-            video.srcObject = stream;
-            video.play();
-
-            video.oncanplay = (event) => {
-                captureBtn.disabled = false;
-                if (!streaming) {
-
-                    video.width = video.videoWidth;
-                    video.height = video.videoHeight;
-                    captureBtn.disabled = false;
-                    streaming = true;
-                }
-            }
-        }).catch(err => {
-            alert("Errors !! : " + err);
-        })
-        // }
-        // else{
-        // alert("Your browser dose not supported this function !");
-        // }
-    }
-
-    captureBtn.onclick = (event) => {
-        let context = temCanvas.getContext('2d');
-        context.clearRect(0, 0, temCanvas.width, temCanvas.height);
-
-        temCanvas.width = video.width;
-        temCanvas.height = video.height;
-
-        context.drawImage(video, 0, 0, video.width, video.height);
-        previewImage.src = temCanvas.toDataURL();
-        previewModal.show();
-
-        if (cropper) cropper.destroy();
-
-        cropper = new Cropper(previewImage, {
-            aspectRatio: 16 / 9,
-            dragMode: 'move',
-            viewMode: 2,
-            background: false,
-        });
-
-    }
-}
-
-
-// var cropper = null;
-
-// var option = {
-//     aspectRatio: 3 / 4,
-//     autoCropArea: 1,
-//     viewMode: 0,
-//     dragMode: 'move',
-//     data: null,
-//     background: true,
-//     center: false,
-//     highlight: false,
-//     guides: false,
-//     cropBoxMovable: false,
-//     cropBoxResizable: false,
-//     toggleDragModeOnDblclick: false,
-//     ready: function () {
-//         let currContainerData = cropper.getContainerData();
-//         cropper.setCropBoxData({ left: 0, top: 0, width: currContainerData.width, height: currContainerData.height });
-//         imageZoomInBtn.onclick = () => cropper.zoom(0.15);
-
-//         imageZoomOutBtn.onclick = () => cropper.zoom(-0.15);
-
-//         imageUpBtn.onclick = () => cropper.move(0, -10)
-
-//         imageDownBtn.onclick = () => cropper.move(0, 10)
-
-//         imageleftBtn.onclick = () => cropper.move(-10, 0)
-
-//         imageRightBtn.onclick = () => cropper.move(10, 0)
-
-//         savePreviewImgBtn.onclick = () => {
-//             try {
-//                 loadingModal.style.display = "block";
-//                 cropper.getCroppedCanvas({fillColor: '#FFFFFF' }).toBlob(blob => {
-//                     let croppedImgUrl = URL.createObjectURL(blob);
-//                     resizeImage(croppedImgUrl);
-//                     previewModal.hide();
-//                     loadingModal.style.display = "none";
-//                     htmlMediaCapture.value = '';
-//                 }, 'image/jpeg', 0.9)
-//             } catch (error) {
-//                 alert(error);
-//             }
-//         }
-
-//         imageResetBtn.onclick = () => {
-//             cropper.reset();
-//             cropper.setCropBoxData({ left: 0, top: 0, width: currContainerData.width, height: currContainerData.height });
-//         }
-//     }
-// }
