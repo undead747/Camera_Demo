@@ -41,6 +41,7 @@ const croppieInit = (imgSrc) => {
                         zoom: defaultZoomRatio,
                         orientation: 1
                     }).then(() => {
+                        document.querySelector(".cr-slider").setAttribute("max", 3.000)
                         resolve("work");
                     })
 
