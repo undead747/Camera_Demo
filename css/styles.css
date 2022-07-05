@@ -111,6 +111,11 @@ button {
   color: white;
 }
 
+.application-form{
+  max-width: 768px;
+  margin: 0 auto;
+}
+
 /* overide bootstrap style */
 .application-form .application-form__label{
   text-align: start;
