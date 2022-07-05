@@ -3,35 +3,23 @@ const image = document.getElementById('image');
 const htmlMediaCapture = document.getElementById("htmlMediaCapture");
 const previewContent = document.getElementById("preview-content");
 
-const video = document.getElementById('video');
-const temCanvas = document.getElementById('temp-canvas');
-const startVideoBtn = document.getElementById('start-video-btn');
-const captureBtn = document.getElementById('capture-btn');
 const closeImagePreviewBtn = document.getElementById('closeImagePreview');
 
-const imageUpBtn = document.querySelector(".preview-image__possition-up");
-const imageDownBtn = document.querySelector(".preview-image__possition-down");
-const imageleftBtn = document.querySelector(".preview-image__possition-left");
-const imageRightBtn = document.querySelector(".preview-image__possition-right");
-const imageZoomInBtn = document.querySelector(".preview-image__zoom-in");
-const imageZoomOutBtn = document.querySelector(".preview-image__zoom-out");
-const imageResetBtn = document.getElementById("preview-modal__reset-btn");
-
 const savePreviewImgBtn = document.querySelector(".preview-image__save");
-const downloadImgBtn = document.querySelector(".preview-image__download");
-const resultImg = document.querySelector(".image-result");
+const downloadImgBtn = document.getElementById("application-form__download");
+const resultImg = document.getElementById("application-form__image-result");
 
-const previewModal = new bootstrap.Modal(document.getElementById("preview-modal"), {});
-const loadingModal = document.querySelector('.loading-modal');
+const loadingModal = document.getElementById('loading-modal');
+const previewModal = document.getElementById('preview-modal');
 
 let croppieInst = null;
 
 const QVGAWidth = 240,
-      QVGAHeight = 320
-      QVGARatio = 3 / 4;
+    QVGAHeight = 320
+QVGARatio = 3 / 4;
 
 const QuadVGAWidth = 960,
-      QuadVGAHeight = 1280;
+    QuadVGAHeight = 1280;
 
 const croppieInit = (imgSrc) => {
     return new Promise((resolve, reject) => {
@@ -45,8 +33,7 @@ const croppieInit = (imgSrc) => {
 
                     croppieInst = new Croppie(previewContent, {
                         viewport: { width: QVGAWidth, height: QVGAHeight },
-                        enforceBoundary: true,
-                        showZoomer: false
+                        enforceBoundary: true
                     })
 
                     croppieInst.bind({
@@ -57,34 +44,11 @@ const croppieInit = (imgSrc) => {
                         resolve("work");
                     })
 
-                    imageResetBtn.onclick = async () => {
-                        await croppieInst.bind({
-                            url: imgSrc,
-                            zoom: defaultZoomRatio,
-                            orientation: 1
-                        })
-                    }
-
-                    imageZoomInBtn.onclick = () => handleZoomInEvent(0.02)
-
-                    imageZoomOutBtn.onclick = () => handleZoomOutEvent(0.02)
-
                     savePreviewImgBtn.onclick = () => {
-                        croppieInst.result({ type: "blob", format: "jpeg", size: {width: 240, height: 320}, quality: 1, circle: false }).then(Blob => {
+                        croppieInst.result({ type: "blob", format: "jpeg", size: { width: 240, height: 320 }, quality: 1, circle: false }).then(Blob => {
                             resultImg.src = URL.createObjectURL(Blob);
-                            htmlMediaCapture.value = '';
-                            previewModal.hide();
+                            handleLoadingModal().close();
                         })
-                    }
-
-                    const handleZoomInEvent = (zoomRatio) => {
-                        let currZoomVal = croppieInst.get().zoom;
-                        croppieInst.setZoom(currZoomVal + zoomRatio);
-                    }
-
-                    const handleZoomOutEvent = (zoomRatio) => {
-                        let currZoomVal = croppieInst.get().zoom;
-                        croppieInst.setZoom(currZoomVal - zoomRatio);
                     }
                 }
             } catch (error) {
@@ -107,7 +71,7 @@ const drawImageInMiddleCanvas = (imgSrc) => {
     let img = new Image();
     let canvs = document.createElement('canvas');
     let canvasContext = canvs.getContext('2d');
-    
+
     img.src = imgSrc;
 
     return new Promise((resolve, reject) => {
@@ -130,6 +94,54 @@ const drawImageInMiddleCanvas = (imgSrc) => {
     })
 }
 
+
+const handleSubmitImageByMediaCapture = (elm) => {
+    elm.onchange = async event => {
+        const [file] = htmlMediaCapture.files;
+        
+        if (file) {
+            handleLoadingModal().open();
+            loadingAnimation().start();
+            
+            setTimeout(async () => {
+                let inputImgURL = URL.createObjectURL(file);
+                let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
+                await croppieInit(drawnImgSrc);
+                loadingAnimation().end();
+            }, 170)
+            
+        }
+    }
+}
+
+const handleImageChange = () => {
+    downloadImgBtn.disabled = true;
+    
+    resultImg.onload = () => {
+        downloadImgBtn.disabled = false;
+    }
+}
+
+const handleImageDownload = () => {
+    let aTag = document.createElement('a');
+    
+    handleImageChange();
+    
+    downloadImgBtn.onclick = () => {
+        let currDate = new Date();
+        
+        aTag.href = resultImg.src;
+        aTag.download = `download_${currDate.toLocaleString()}.jpg`;
+        aTag.click();
+    }
+}
+
+const previewModalCloseListener = () => {
+    $("#preview-modal").on("hidden.bs.modal", function () {
+        htmlMediaCapture.value = '';
+    });
+}
+
 const loadingAnimation = () => {
     const start = () => {
         loadingModal.style.display = "block";
@@ -142,76 +154,22 @@ const loadingAnimation = () => {
     }
 }
 
-const handleSubmitImageByMediaCapture = (elm) => {
-    elm.onchange = async event => {
-        const [file] = htmlMediaCapture.files;
-
-        if (file) {
-            await previewModal.show();
-            loadingAnimation().start();
-            
-            setTimeout(async () => {
-                let inputImgURL = URL.createObjectURL(file);
-                let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
-                await croppieInit(drawnImgSrc);
-                loadingAnimation().end();
-            }, 170)
-
-        }
-    }
-}
-
-
-const handleImageChange = () => {
-    downloadImgBtn.disabled = true;
-
-    resultImg.onload = () => {
-        downloadImgBtn.disabled = false;
-    }
-}
-
-const handleImageDownload = () => {
-    let aTag = document.createElement('a');
-
-    handleImageChange();
-
-    downloadImgBtn.onclick = () => {
-        let currDate = new Date();
-
-        aTag.href = resultImg.src;
-        aTag.download = `download_${currDate.toLocaleString()}.jpg`;
-        aTag.click();
-    }
-}
-
-const handleClosePreviewModal = () => {
-    closeImagePreviewBtn.onclick = () => {
-        previewModal.hide();
-        htmlMediaCapture.value = '';
-    }
-}
-
-const resizeImage = (imgSrc, [width = 1920, height = 1080]) => {
-    let finalCanvas = document.createElement("canvas");
-    let img = new Image();
-    const finalWidth = width;
-    const finalHeight = height;
-
-    img.onload = function () {
-        finalCanvas.width = finalWidth;
-        finalCanvas.height = finalHeight;
-
-        finalCanvas.getContext("2d").drawImage(img, 0, 0, img.width, img.height,
-            0, 0, finalCanvas.width, finalCanvas.height);
-
-        resultImg.src = finalCanvas.toDataURL("image/jpeg")
+const handleLoadingModal = () => {
+    const open = () =>{
+        $("#preview-modal").modal('show');
+    } 
+    const close = () =>{
+        $("#preview-modal").modal('hide');
     }
 
-    img.src = imgSrc;
+    return {
+        open,
+        close
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     handleSubmitImageByMediaCapture(htmlMediaCapture);
-    handleClosePreviewModal();
     handleImageDownload();
+    previewModalCloseListener();
 })

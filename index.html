@@ -6,107 +6,93 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>東亜：プレビュー機能</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!------------------------- Bootstrap css ----------------------->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!------------------------- Font-awsome css ----------------------->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
         integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!------------------------- Croppie css ----------------------->
     <link rel="stylesheet" href="./css/croppie.css">
+    <!------------------------- Custome css ----------------------->
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <body>
-    
     <div class="container">
-        <canvas id="temp-canvas" width=175 style="display: none;"></canvas>
-        
-        <img class="image-result" src="./images/ui-element-square-border-frame-512.webp" alt="saved-image" />
-        <button type="button" class="btn btn-warning preview-image__download">ダウンロード</button>
-
-        <div class="option1">
-            <h4 class="mb-3">HTML Media Capture</h4>
-            <input type="file" accept=".png, .jpg, .jpeg, .heic" id="htmlMediaCapture">
-        </div>
-
-        <div class="option1">
-            <h4 class="mb-3">WebRTC</h4>
-            <div class="camera">
-                <div class="text-center">
-                    <video id="video" autoplay muted playsinline>Video stream not available</video>
-                </div>
-                <div class="text-center">
-                    <button id="start-video-btn" class="btn btn-primary">Start Video</button>
-                    <button id="capture-btn" class="btn btn-primary">Take photo</button>
+        <div class="form-horizontal application-form">
+            <h4 class="application-form__title">オンライン申請書</h4>
+            <div class="form-group">
+                <label class="col-sm-3 control-label application-form__label">氏名</label>
+                <div class="col-sm-9 ">
+                    <input type="text" class="form-control" placeholder="日本　太郎" autocomplete="off" title="">
                 </div>
             </div>
-            <img src="./images/canIuseit.png" alt="map-image" class="map-image" id="map-image">
+            <div class="form-group">
+                <label class="col-sm-3 control-label application-form__label">フリガナ</label>
+                <div class="col-sm-9 ">
+                    <input type="text" class="form-control" placeholder="カイハツ　タロウ" autocomplete="off" title="">
+                </div>
+            </div>
+            <div class="application-form__image-input">
+                <img class="application-form__image-result" id="application-form__image-result" src="./images/default-result-image.jpg" alt="saved-image" />
+                <div class="application-form__edit-img">
+                    <label for="htmlMediaCapture" class="custom-file-upload btn btn-primary">
+                        編集
+                    </label>
+                    <input type="file" accept=".png, .jpg, .jpeg, .heic" id="htmlMediaCapture">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn--custom" id="application-form__download">ダウンロード</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    
+
     <!-- Modal -->
-    <div class="modal fade" id="preview-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">イメージプレビュー</h5>
-                    <button type="button" class="btn-close" id ="closeImagePreview" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="preview-modal__content" id="preview-content" style="width: 240px; height: 320px; margin: 0 auto;"></div>
-                    
-                    <div class="preview-image__controller">
-                        <div class="preview-modal__reset-btn">
-                            <button type="button" class="btn btn-secondary" id="preview-modal__reset-btn">
-                                リセット
-                            </button>
-                        </div>
+    <div class="modal fade preview-modal" id="preview-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header preview-modal__header">
+                <h5 class="modal-title" id="exampleModalLabel">イメージプレビュー</h5>
+                <button type="button" id="closeImagePreview" class="close preview-modal__close-btn" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="preview-modal__content" id="preview-content"
+                style="width: 240px; height: 320px; margin: 0 auto;"></div>
 
-                        <div class="preview-image__possition-controller" style="display: none;">
-                            <button type="button" class="btn btn-secondary preview-image__possition-up">
-                                <i class="fa fa-arrow-up" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" class="btn btn-secondary preview-image__possition-down">
-                                <i class="fa fa-arrow-down" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" class="btn btn-secondary preview-image__possition-left">
-                                <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" class="btn btn-secondary preview-image__possition-right">
-                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                            </button>
-                        </div>
-    
-                        <div class="preview-image__zoom-controller">
-                            <button type="button" class="btn btn-secondary btn-lg preview-image__zoom-in">
-                                <i class="fa fa-search-plus" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" class="btn btn-secondary btn-lg preview-image__zoom-out">
-                                <i class="fa fa-search-minus" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary preview-image__save">保存</button>
+            <div class="preview-image__controller">
+                <div class="preview-image__zoom-controller">
                 </div>
             </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary preview-image__save">保存</button>
+            </div>
+          </div>
         </div>
+      </div>
 
-    </div>
-    
-    <div class="loading-modal" style="display: none;">
+    <div class="loading-modal" id="loading-modal" style="display: none;">
         <div class="loading-modal__content">
-            <div class="spinner-border text-warning" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
             <p>Loading...</p>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"
+        integrity="sha512-lzilC+JFd6YV8+vQRNRtU7DOqv5Sa9Ek53lXt/k91HZTJpytHS1L6l1mMKR9K6VVoDt4LiEXaa6XBrYk1YhGTQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
     <script src="./js/croppie.js"></script>
     <script src="./js/main.js"></script>
