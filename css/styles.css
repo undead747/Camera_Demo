@@ -125,9 +125,13 @@ button {
   margin: 2rem 0 2.5rem 0;
 }
 
+.application-form__input{
+  font-size: 16px;
+}
+
 .application-form__image-result{
-  width: 240px;
-  height: 320px;
+  width: 120px;
+  height: 160px;
   margin: 0 auto;
   border: 1px black solid;
   border-radius: 4px;
