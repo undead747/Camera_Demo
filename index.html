@@ -1,101 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>カメラ機能の試作</title>
-    <!------------------------- Bootstrap css ----------------------->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <!------------------------- Font-awsome css ----------------------->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
-        integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!------------------------- Croppie css ----------------------->
-    <link rel="stylesheet" href="./css/croppie.css">
-    <!------------------------- Custome css ----------------------->
-    <link rel="stylesheet" href="./css/styles.css">
-</head>
-
+<html>
 <body>
-    <div class="container">
-        <div class="form-horizontal application-form">
-            <h4 class="application-form__title">オンライン申請書</h4>
-            <div class="form-group">
-                <label class="col-xs-4 col-sm-3 control-label application-form__label">氏名：</label>
-                <div class="col-xs-8 col-sm-9">
-                    <input type="text" class="form-control application-form__input" placeholder="日本　太郎" autocomplete="off" title="">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-xs-4 col-sm-3 control-label application-form__label">フリガナ：</label>
-                <div class="col-xs-8 col-sm-9">
-                    <input type="text" class="form-control application-form__input" placeholder="カイハツ　タロウ" autocomplete="off" title="">
-                </div>
-            </div>
-            <div class="application-form__image-input">
-                <img class="application-form__image-result" id="application-form__image-result" src="./images/default-result-image.jpg" alt="saved-image" />
-                <div class="application-form__edit-img">
-                    <label for="htmlMediaCapture" class="custom-file-upload btn btn-primary">
-                        編集
-                    </label>
-                    <input type="file" accept=".png, .jpg, .jpeg, .heic" id="htmlMediaCapture">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-lg btn--custom" id="application-form__download">ダウンロード</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Modal -->
-    <div class="modal fade preview-modal" id="preview-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header preview-modal__header">
-                <h5 class="modal-title" id="exampleModalLabel">編集</h5>
-                <button type="button" id="closeImagePreview" class="close preview-modal__close-btn" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-                <div class="preview-modal__content" id="preview-content"
-                style="width: 240px; height: 320px; margin: 0 auto;"></div>
-
-            <div class="preview-image__controller">
-                <div class="preview-image__zoom-controller">
-                </div>
-            </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary preview-image__save">保存</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    <div class="loading-modal" id="loading-modal" style="display: none;">
-        <div class="loading-modal__content">
-            <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
-            <p>Loading...</p>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"
-        integrity="sha512-lzilC+JFd6YV8+vQRNRtU7DOqv5Sa9Ek53lXt/k91HZTJpytHS1L6l1mMKR9K6VVoDt4LiEXaa6XBrYk1YhGTQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
-    <script src="./js/croppie.js"></script>
-    <script src="./js/main.js"></script>
 </body>
+<script>
+var i, el;
 
+var createdElements = {};
+var events = [];
+
+function attachAlert(element) {
+    element.onclick = function() { alert(element.innerHTML); };
+}
+
+function reallyBadAttachAlert(element) {
+    return function() { alert(element.innerHTML); };
+}
+
+for (i = 0; i < 1000000; i++) {
+    el = document.createElement('div');
+    el.innerHTML = i;
+
+    /** posibility one: you're storing the element somewhere **/
+    attachAlert(el);
+    createdElements['div' + i] = el; 
+
+    /** posibility two: you're storing the callbacks somewhere **/
+    event = reallyBadAttachAlert(el);
+    events.push(event);
+    el.onclick = event;
+
+}
+</script>
 </html>
