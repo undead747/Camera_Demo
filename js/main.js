@@ -175,7 +175,6 @@ const handleLoadingModal = () => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    alert("update hahahaha")
     handleSubmitImageByMediaCapture(htmlMediaCapture);
     handleImageDownload();
     previewModalCloseListener();
