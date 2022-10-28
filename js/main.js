@@ -105,6 +105,8 @@ const handleSubmitImageByMediaCapture = (elm) => {
         if (file) {
             handleLoadingModal().open();
             loadingAnimation().start();
+
+            alert(file.type)
             
             setTimeout(async () => {
                 let inputImgURL = URL.createObjectURL(file);
