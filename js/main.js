@@ -36,6 +36,7 @@ const croppieInit = (imgSrc) => {
                         enforceBoundary: true
                     })
 
+                    debugger
                     croppieInst.bind({
                         url: imgSrc,
                         zoom: defaultZoomRatio,
@@ -47,6 +48,7 @@ const croppieInit = (imgSrc) => {
 
                     savePreviewImgBtn.onclick = () => {
                         croppieInst.result({ type: "blob", format: "jpeg", size: { width: 240, height: 320 }, quality: 1, circle: false }).then(Blob => {
+                            debugger
                             resultImg.src = URL.createObjectURL(Blob);
                             handleLoadingModal().close();
                         })
@@ -107,6 +109,7 @@ const handleSubmitImageByMediaCapture = (elm) => {
             setTimeout(async () => {
                 let inputImgURL = URL.createObjectURL(file);
                 let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
+                debugger
                 await croppieInit(drawnImgSrc);
                 loadingAnimation().end();
             }, 170)
@@ -170,6 +173,7 @@ const handleLoadingModal = () => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    alert("update hahahaha")
     handleSubmitImageByMediaCapture(htmlMediaCapture);
     handleImageDownload();
     previewModalCloseListener();
