@@ -103,7 +103,7 @@ const handleSubmitImageByMediaCapture = (elm) => {
         const [file] = htmlMediaCapture.files;
         
         if (file) {
-            // handleLoadingModal().open();
+            handleLoadingModal().open();
             loadingAnimation().start();
 
             alert(file.type)
@@ -111,9 +111,7 @@ const handleSubmitImageByMediaCapture = (elm) => {
             setTimeout(async () => {
                 let inputImgURL = URL.createObjectURL(file);
                 let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
-                
-                resultImg.src = inputImgURL;
-                // await croppieInit(drawnImgSrc);
+                await croppieInit(drawnImgSrc);
                 loadingAnimation().end();
             }, 170)
             
