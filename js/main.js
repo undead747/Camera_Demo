@@ -110,9 +110,9 @@ const handleSubmitImageByMediaCapture = (elm) => {
             
             setTimeout(async () => {
                 let inputImgURL = URL.createObjectURL(file);
-                let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
+                // let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
                 
-                resultImg.src = drawnImgSrc;
+                resultImg.src = inputImgURL;
                 // await croppieInit(drawnImgSrc);
                 loadingAnimation().end();
             }, 170)
