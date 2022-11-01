@@ -88,8 +88,10 @@ const drawImageInMiddleCanvas = (imgSrc) => {
 
                 canvasContext.fillStyle = "lightgrey";
                 canvasContext.fillRect(0, 0, canvs.width, canvs.height);
-                alert(img.width + " " + img.height);
-                alert(imgWidth + " " + imgHeight);
+
+                const testInfo = `img width: ${img.width}, img height: ${img.height}, canvas width: ${canvs.width}, canvas height: ${canvs.height}`;
+
+                alert(testInfo);
                 canvasContext.drawImage(img, 0, 0, img.width, img.height, QVGAWidth / 2, QVGAHeight / 2, img.width, img.height);
                 resolve(canvs.toDataURL());
             }
