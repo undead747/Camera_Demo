@@ -88,7 +88,7 @@ const drawImageInMiddleCanvas = (imgSrc) => {
 
                 canvasContext.fillStyle = "lightgrey";
                 canvasContext.fillRect(0, 0, canvs.width, canvs.height);
-                alert(img.width, img.height)
+                alert(img.width + " " + img.height)
                 canvasContext.drawImage(img, 0, 0, img.width, img.height, QVGAWidth / 2, QVGAHeight / 2, imgWidth, imgHeight);
                 resolve(canvs.toDataURL());
             }
@@ -111,10 +111,10 @@ const handleSubmitImageByMediaCapture = (elm) => {
             
             setTimeout(async () => {
                 let inputImgURL = URL.createObjectURL(file);
-                // let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
+                let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
                 
                 resultImg.src = inputImgURL;
-                await croppieInit(drawnImgSrc);
+                // await croppieInit(drawnImgSrc);
                 loadingAnimation().end();
             }, 170)
             
