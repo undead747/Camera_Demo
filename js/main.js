@@ -36,7 +36,6 @@ const croppieInit = (imgSrc) => {
                         enforceBoundary: true
                     })
 
-                    debugger
                     croppieInst.bind({
                         url: imgSrc,
                         zoom: defaultZoomRatio,
@@ -48,7 +47,6 @@ const croppieInit = (imgSrc) => {
 
                     savePreviewImgBtn.onclick = () => {
                         croppieInst.result({ type: "blob", format: "jpeg", size: { width: 240, height: 320 }, quality: 1, circle: false }).then(Blob => {
-                            debugger
                             resultImg.src = URL.createObjectURL(Blob);
                             handleLoadingModal().close();
                         })
