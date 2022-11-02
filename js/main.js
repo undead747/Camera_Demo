@@ -99,10 +99,61 @@ const drawImageInMiddleCanvas = (imgSrc) => {
     })
 }
 
+function getOrientation(file, callback) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+
+        var view = new DataView(e.target.result);
+        if (view.getUint16(0, false) != 0xFFD8)
+        {
+            return callback(-2);
+        }
+        var length = view.byteLength, offset = 2;
+        while (offset < length) 
+        {
+            if (view.getUint16(offset+2, false) <= 8) return callback(-1);
+            var marker = view.getUint16(offset, false);
+            offset += 2;
+            if (marker == 0xFFE1) 
+            {
+                if (view.getUint32(offset += 2, false) != 0x45786966) 
+                {
+                    return callback(-1);
+                }
+
+                var little = view.getUint16(offset += 6, false) == 0x4949;
+                offset += view.getUint32(offset + 4, little);
+                var tags = view.getUint16(offset, little);
+                offset += 2;
+                for (var i = 0; i < tags; i++)
+                {
+                    if (view.getUint16(offset + (i * 12), little) == 0x0112)
+                    {
+                        return callback(view.getUint16(offset + (i * 12) + 8, little));
+                    }
+                }
+            }
+            else if ((marker & 0xFF00) != 0xFF00)
+            {
+                break;
+            }
+            else
+            { 
+                offset += view.getUint16(offset, false);
+            }
+        }
+        return callback(-1);
+    };
+    reader.readAsArrayBuffer(file);
+}
 
 const handleSubmitImageByMediaCapture = (elm) => {
     elm.onchange = async event => {
         const [file] = htmlMediaCapture.files;
+
+        getOrientation(file, function(orientation) {
+            alert('orientation: ' + orientation);
+        });
         
         if (file) {
             handleLoadingModal().open();
@@ -112,10 +163,10 @@ const handleSubmitImageByMediaCapture = (elm) => {
                 let inputImgURL = URL.createObjectURL(file);
                 let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
                
-                var a = document.createElement("a"); //Create <a>
-                a.href = inputImgURL; //Image Base64 Goes here
-                a.download = "Image.png"; //File name Here
-                a.click(); //Downloaded file
+                // var a = document.createElement("a"); //Create <a>
+                // a.href = inputImgURL; //Image Base64 Goes here
+                // a.download = "Image.png"; //File name Here
+                // a.click(); //Downloaded file
                 
                 await croppieInit(drawnImgSrc);
                 resultImg.src = drawnImgSrc;
@@ -125,6 +176,7 @@ const handleSubmitImageByMediaCapture = (elm) => {
         }
     }
 }
+
 
 function getFileArrayBuffer(file) {
     return new Promise(function (resolve, reject) {
