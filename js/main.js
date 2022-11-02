@@ -87,8 +87,8 @@ const drawImageInMiddleCanvas = (imgSrc) => {
                 canvasContext.fillStyle = "lightgrey";
                 canvasContext.fillRect(0, 0, canvs.width, canvs.height);
 
-                const testInfo = `img width: ${img.width}, img height: ${img.height}, canvas width: ${canvs.width}, canvas height: ${canvs.height}`;
-                alert(testInfo)
+                // const testInfo = `img width: ${img.width}, img height: ${img.height}, canvas width: ${canvs.width}, canvas height: ${canvs.height}`;
+                // alert(testInfo)
 
                 canvasContext.drawImage(img, 0, 0, img.width, img.height, QVGAWidth / 2, QVGAHeight / 2, imgWidth, imgHeight);
                 resolve(canvs.toDataURL('image/png'));
@@ -147,13 +147,16 @@ function getOrientation(file, callback) {
     reader.readAsArrayBuffer(file);
 }
 
+const test = async function(file){
+    let exifData = await exifr.parse(file)
+    console.log('exifData', exifData)
+}
+
 const handleSubmitImageByMediaCapture = (elm) => {
     elm.onchange = async event => {
         const [file] = htmlMediaCapture.files;
 
-        getOrientation(file, function(orientation) {
-            alert('orientation: ' + orientation);
-        });
+        test(file);
         
         if (file) {
             handleLoadingModal().open();
