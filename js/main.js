@@ -112,13 +112,7 @@ const handleSubmitImageByMediaCapture = (elm) => {
                 let inputImgURL = URL.createObjectURL(file);
                 let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
                
-                var image = new Image();
-                image.src = drawnImgSrc;
-
-                image.onload = function(){
-                    var w = window.open("");
-                    w.document.write(image.outerHTML);
-                }
+                alert(drawnImgSrc)
                 
                 await croppieInit(drawnImgSrc);
                 resultImg.src = drawnImgSrc;
