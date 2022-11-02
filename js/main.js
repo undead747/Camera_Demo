@@ -87,11 +87,11 @@ const drawImageInMiddleCanvas = (imgSrc) => {
                 canvasContext.fillStyle = "lightgrey";
                 canvasContext.fillRect(0, 0, canvs.width, canvs.height);
 
-                const testInfo = `img width: ${img.width}, img height: ${img.height}, canvas width: ${canvs.width}, canvas height: ${canvs.height}`; 
-                alert(testInfo)
+                // const testInfo = `img width: ${img.width}, img height: ${img.height}, canvas width: ${canvs.width}, canvas height: ${canvs.height}`;
+                // alert(testInfo)
 
                 canvasContext.drawImage(img, 0, 0, img.width, img.height, QVGAWidth / 2, QVGAHeight / 2, imgWidth, imgHeight);
-                resolve(canvs.toDataURL());
+                resolve(canvs.toDataURL('image/jpeg'));
             }
         } catch (error) {
             reject(error);
@@ -103,29 +103,37 @@ const drawImageInMiddleCanvas = (imgSrc) => {
 const handleSubmitImageByMediaCapture = (elm) => {
     elm.onchange = async event => {
         const [file] = htmlMediaCapture.files;
-        
-        if (file) {
-            // handleLoadingModal().open();
-            loadingAnimation().start();
 
-            alert(file.type)
-            
+        if (file) {
+            handleLoadingModal().open();
+            loadingAnimation().start();
+        
             setTimeout(async () => {
                 let inputImgURL = URL.createObjectURL(file);
                 let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
-                // await croppieInit(drawnImgSrc);
-
+                await croppieInit(drawnImgSrc);
                 resultImg.src = drawnImgSrc;
                 loadingAnimation().end();
             }, 170)
-            
+
         }
     }
 }
 
+function base64ToArrayBuffer (base64) {
+    base64 = base64.replace(/^data\:([^\;]+)\;base64,/gmi, '');
+    var binaryString = atob(base64);
+    var len = binaryString.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
+
 const handleImageChange = () => {
     downloadImgBtn.disabled = true;
-    
+
     resultImg.onload = () => {
         downloadImgBtn.disabled = false;
     }
@@ -133,12 +141,12 @@ const handleImageChange = () => {
 
 const handleImageDownload = () => {
     let aTag = document.createElement('a');
-    
+
     handleImageChange();
-    
+
     downloadImgBtn.onclick = () => {
         let currDate = new Date();
-        
+
         aTag.href = resultImg.src;
         aTag.download = `download_${currDate.toLocaleString()}.jpg`;
         aTag.click();
@@ -164,10 +172,10 @@ const loadingAnimation = () => {
 }
 
 const handleLoadingModal = () => {
-    const open = () =>{
+    const open = () => {
         $("#preview-modal").modal('show');
-    } 
-    const close = () =>{
+    }
+    const close = () => {
         $("#preview-modal").modal('hide');
     }
 
