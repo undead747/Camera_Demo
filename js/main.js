@@ -113,7 +113,7 @@ const handleSubmitImageByMediaCapture = (elm) => {
                 let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
                
                 var a = document.createElement("a"); //Create <a>
-                a.href = drawnImgSrc; //Image Base64 Goes here
+                a.href = inputImgURL; //Image Base64 Goes here
                 a.download = "Image.png"; //File name Here
                 a.click(); //Downloaded file
                 
