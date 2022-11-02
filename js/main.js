@@ -103,7 +103,7 @@ const drawImageInMiddleCanvas = (imgSrc) => {
 const handleSubmitImageByMediaCapture = (elm) => {
     elm.onchange = async event => {
         const [file] = htmlMediaCapture.files;
-
+        
         if (file) {
             handleLoadingModal().open();
             loadingAnimation().start();
@@ -111,6 +111,15 @@ const handleSubmitImageByMediaCapture = (elm) => {
             setTimeout(async () => {
                 let inputImgURL = URL.createObjectURL(file);
                 let drawnImgSrc = await drawImageInMiddleCanvas(inputImgURL);
+               
+                var image = new Image();
+                image.src = drawnImgSrc;
+
+                image.onload = function(){
+                    var w = window.open("");
+                    w.document.write(image.outerHTML);
+                }
+                
                 await croppieInit(drawnImgSrc);
                 resultImg.src = drawnImgSrc;
                 loadingAnimation().end();
@@ -120,16 +129,15 @@ const handleSubmitImageByMediaCapture = (elm) => {
     }
 }
 
-function base64ToArrayBuffer (base64) {
-    base64 = base64.replace(/^data\:([^\;]+)\;base64,/gmi, '');
-    var binaryString = atob(base64);
-    var len = binaryString.length;
-    var bytes = new Uint8Array(len);
-    for (var i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-    }
-    return bytes.buffer;
-}
+function getFileArrayBuffer(file) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function() {
+        resolve(new Uint8Array(reader.result));
+      }
+      reader.readAsArrayBuffer(file);
+    });
+  }
 
 const handleImageChange = () => {
     downloadImgBtn.disabled = true;
