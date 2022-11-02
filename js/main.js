@@ -149,7 +149,7 @@ function getOrientation(file, callback) {
 
 const test = async function(file){
     let exifData = await exifr.parse(file)
-    console.log('exifData', exifData)
+    alert(JSON.stringify(exifData))
 }
 
 const handleSubmitImageByMediaCapture = (elm) => {
