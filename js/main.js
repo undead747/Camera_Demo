@@ -91,7 +91,7 @@ const drawImageInMiddleCanvas = (imgSrc) => {
                 alert(testInfo)
 
                 canvasContext.drawImage(img, 0, 0, img.width, img.height, QVGAWidth / 2, QVGAHeight / 2, imgWidth, imgHeight);
-                resolve(canvs.toDataURL('image/jpeg'));
+                resolve(canvs.toDataURL('image/png'));
             }
         } catch (error) {
             reject(error);
